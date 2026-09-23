@@ -178,7 +178,7 @@
                     මොකක්ද මේ Forgetting Curve (අමතක වීමේ වක්‍රය) සහ Spaced Repetition කියන්නේ?
                 </h2>
                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    අපි යම් අලුත් තොරතුරක්, පාඩමක් (Physics, Chemistry, Biology හෝ Combined Maths වැනි විෂය කරුණක්) ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මොළයෙන් එම මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. 
+                    අපි යම් අලුත් තොරතුරක්, පාඩමක් (Physics, Chemistry, Biology හෝ Combined Maths වැනි විෂය කරුණක්) ඉගෙන ග පසු, කාලයත් සමඟ අපේ මොළයෙන් එම මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. 
                 </p>
                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                     විද්‍යාත්මක පර්යේෂණවලට අනුව, අප ඉගෙන ගන්නා දේවලින් <b>50% කට වැඩි ප්‍රමාණයක් පැය 24 ඇතුළත</b> අපට අමතක වී යයි. දින කිහිපයක් ගත වන විට එම ප්‍රතිශතය 80% ඉක්මවා යයි. මෙයින් අදහස් වන්නේ සාමාන්‍ය ක්‍රමයට එක් වරක් කියවීම පමණක් ප්‍රමාණවත් නොවන බවයි.
@@ -283,16 +283,29 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'forgetting-curve-app-default';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "mock", projectId: "mock" };
+        // Firebase Configuration (ලැබී ඇති අලුත් විස්තර මෙහි ඇතුළත් කර ඇත)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3I1nZ9tgTeqNUFJiapphjjHaILBq-XtQ",
+            authDomain: "memory-vault-39654.firebaseapp.com",
+            projectId: "memory-vault-39654",
+            storageBucket: "memory-vault-39654.firebasestorage.app",
+            messagingSenderId: "927845351656",
+            appId: "1:927845351656:web:2a70490ab6976df9b4495d",
+            measurementId: "G-XR26F7LBF5"
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'memory-vault-39654';
 
         const app = initializeApp(firebaseConfig);
+        let analytics = null;
         let db = null;
         let auth = null;
         let googleProvider = null;
         
         try {
+            analytics = getAnalytics(app);
             db = getFirestore(app);
             auth = getAuth(app);
             googleProvider = new GoogleAuthProvider();
@@ -415,7 +428,6 @@
                 renderTodayReviews();
             }, (error) => {
                 console.warn("Firestore sync notice (using local storage fallback):", error.message);
-                // Keep using LocalStorage fallback seamlessly without disrupting user experience
             });
         }
 
