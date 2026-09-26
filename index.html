@@ -1,896 +1,966 @@
 <!DOCTYPE html>
-<html lang="si" class="h-full">
+<html lang="si" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgetting Curve Study Planner</title>
-    <!-- Favicon updated with a creative brain design matching the site -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%236366f1' d='M256 32c123.7 0 224 100.3 224 224s-100.3 224-224 224S32 379.7 32 256S132.3 32 256 32zm0 64c-88.4 0-160 71.6-160 160s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zm0 48c61.9 0 112 50.1 112 112s-50.1 112-112 112s-112-50.1-112-112s50.1-112 112-112z'/%3E%3C/svg%3E">
+    <title>Memory Vault - Smart Study Planner</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22favGrad%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22><stop offset=%220%25%22 stop-color=%22%236366f1%22/><stop offset=%2250%25%22 stop-color=%22%23a855f7%22/><stop offset=%22100%25%22 stop-color=%22%23ec4899%22/></linearGradient><filter id=%22shadow%22 x=%22-20%25%22 y=%22-20%25%22 width=%22140%25%22 height=%22140%25%22><feDropShadow dx=%220%22 dy=%224%22 stdDeviation=%224%22 flood-color=%22%23000000%22 flood-opacity=%220.2%22/></filter></defs><rect width=%22100%22 height=%22100%22 rx=%2228%22 fill=%22url(%23favGrad)%22 filter=%22url(%23shadow)%22/><g transform=%22translate(14, 14) scale(0.72)%22 fill=%22white%22><path d=%22M50 5C25.147 5 5 25.147 5 50s20.147 45 45 45 45-20.147 45-45S74.853 5 50 5zm0 10c19.33 0 35 15.67 35 35s-15.67 35-35 35-35-15.67-35-35 15.67-35 35-35zm-5 12v11H34v10h11v23h10V58h11V48H55V27H45z%22/></g></svg>">
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        subject: {
-                            physics: { bg: 'bg-blue-100 dark:bg-blue-950/50', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-300 dark:border-blue-800', dot: 'bg-blue-500' },
-                            chemistry: { bg: 'bg-purple-100 dark:bg-purple-950/50', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-300 dark:border-purple-800', dot: 'bg-purple-500' },
-                            biology: { bg: 'bg-emerald-100 dark:bg-emerald-950/50', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-emerald-300 dark:border-emerald-800', dot: 'bg-emerald-500' },
-                            maths: { bg: 'bg-amber-100 dark:bg-amber-950/50', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-800', dot: 'bg-amber-500' }
-                        }
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
-        .dark .glass-card { background: rgba(30, 41, 59, 0.95); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900 min-h-full text-slate-800 dark:text-slate-100 transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300">
 
-    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 shadow-sm">
-        <div id="mainHeaderContainer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between transition-all">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 animate-pulse">
-                    <i class="fa-solid fa-brain text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="font-extrabold text-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Memory Vault</h1>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Smart Ebbinghaus Spaced Repetition</p>
-                </div>
+<header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div id="mainHeaderContainer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between transition-all">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 animate-pulse">
+                <i class="fa-solid fa-brain text-lg"></i>
             </div>
-            
-            <div class="flex items-center space-x-3">
-                <!-- Theme Toggle -->
-                <button onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:scale-105 transition-all text-sm shadow-sm">
-                    <i id="themeIcon" class="fa-solid fa-moon"></i>
-                </button>
-
-                <div id="authContainer">
-                    <button onclick="handleGoogleSignIn()" id="authBtn" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
-                        <i class="fa-brands fa-google text-indigo-600"></i>
-                        <span id="authBtnText">Sign In</span>
-                    </button>
-                </div>
-
-                <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <button onclick="switchTab('calendar')" id="btn-calendar" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
-                        <i class="fa-solid fa-calendar-days mr-1.5"></i>කැලැන්ඩරය
-                    </button>
-                    <button onclick="switchTab('guide')" id="btn-guide" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
-                        <i class="fa-solid fa-book-open mr-1.5"></i>මාර්ගෝපදේශය
-                    </button>
-                </div>
+            <div>
+                <h1 class="font-extrabold text-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Memory Vault</h1>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Smart Ebbinghaus Spaced Repetition</p>
             </div>
         </div>
-    </header>
-
-    <main id="outerMainWrapper" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all">
         
-        <!-- CALENDAR & TODO VIEW -->
-        <div id="view-calendar" class="space-y-6">
-            
-            <!-- Gamified Stats & Progress Bar Header -->
-            <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div>
-                        <div class="flex items-center space-x-2 mb-1">
-                            <span class="px-3 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800">
-                                <i class="fa-solid fa-fire text-amber-500 mr-1"></i> මතක පුහුණුව
-                            </span>
-                            <span id="streakBadge" class="text-xs text-slate-500 dark:text-slate-400 font-medium">අද දින පුනරාවර්තන සාර්ථකයි!</span>
-                        </div>
-                        <h2 class="text-xl font-black bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">ඔබේ මොළයේ මතක ධාරිතාව නංවාගන්න</h2>
+        <div class="flex items-center space-x-3">
+            <!-- Theme Toggle -->
+            <button onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:scale-105 transition-all text-sm shadow-sm">
+                <i id="themeIcon" class="fa-solid fa-moon"></i>
+            </button>
+
+            <div id="authContainer">
+                <button onclick="handleGoogleSignIn()" id="authBtn" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                    <i class="fa-brands fa-google text-indigo-600"></i>
+                    <span id="authBtnText">Sign In</span>
+                </button>
+            </div>
+
+            <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
+                <button onclick="switchTab('calendar')" id="btn-calendar" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
+                    <i class="fa-solid fa-calendar-days mr-1.5"></i>කැලැන්ඩරය
+                </button>
+                <button onclick="switchTab('guide')" id="btn-guide" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-book-open mr-1.5"></i>මාර්ගෝපදේශය
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="outerMainWrapper" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all">
+    
+    <!-- CALENDAR & TODO VIEW -->
+    <div id="view-calendar" class="space-y-6">
+        
+        <!-- Gamified Stats & Progress Bar Header -->
+        <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 mb-1">
+                        <span class="px-3 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800">
+                            <i class="fa-solid fa-fire text-amber-500 mr-1"></i> මතක පුහුණුව
+                        </span>
+                        <span id="streakBadge" class="text-xs text-slate-500 dark:text-slate-400 font-medium">අද දින පුනරාවර්තන සාර්ථකයි!</span>
                     </div>
-                    <!-- Mini Stats Counters -->
-                    <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
-                        <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
-                            <span class="block text-xs text-slate-400 font-medium">මුළු වැඩ</span>
-                            <span id="statTotalTopics" class="text-lg font-black text-indigo-600 dark:text-indigo-400">0</span>
-                        </div>
-                        <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
-                            <span class="block text-xs text-slate-400 font-medium">අද වැඩ</span>
-                            <span id="statTodayCount" class="text-lg font-black text-pink-600 dark:text-pink-400">0</span>
-                        </div>
-                        <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
-                            <span class="block text-xs text-slate-400 font-medium">සාර්ථකත්ව</span>
-                            <span id="statCompletionRate" class="text-lg font-black text-emerald-600 dark:text-emerald-400">0%</span>
-                        </div>
+                    <h2 class="text-xl font-black bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">ඔබේ මොළයේ මතක ධාරිතාව නංවාගන්න</h2>
+                </div>
+                <!-- Mini Stats Counters -->
+                <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
+                    <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
+                        <span class="block text-xs text-slate-400 font-medium">මුළු වැඩ</span>
+                        <span id="statTotalTopics" class="text-lg font-black text-indigo-600 dark:text-indigo-400">0</span>
+                    </div>
+                    <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
+                        <span class="block text-xs text-slate-400 font-medium">අද වැඩ</span>
+                        <span id="statTodayCount" class="text-lg font-black text-pink-600 dark:text-pink-400">0</span>
+                    </div>
+                    <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
+                        <span class="block text-xs text-slate-400 font-medium">සාර්ථකත්ව</span>
+                        <span id="statCompletionRate" class="text-lg font-black text-emerald-600 dark:text-emerald-400">0%</span>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <!-- Topic Add Form -->
-                <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-1 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full pointer-events-none"></div>
-                    <h2 class="text-lg font-bold mb-4 flex items-center text-indigo-600 dark:text-indigo-400">
-                        <i class="fa-solid fa-plus-circle mr-2"></i>අද ඉගෙනගත් දෙය එක් කරන්න
-                    </h2>
-                    <form id="topicForm" onsubmit="addTopic(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විෂය (Subject)</label>
-                            <select id="topicSubject" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
-                                <option value="physics">Physics (භෞතික විද්‍යාව)</option>
-                                <option value="chemistry">Chemistry (රසායන විද්‍යාව)</option>
-                                <option value="biology">Biology (ජීව විද්‍යාව)</option>
-                                <option value="maths">Combined Mathematics (සංයුක්ත ගණිතය)</option>
-                            </select>
+            <!-- Creative Subject-Wise Breakdown Cards -->
+            <div class="mt-6 pt-6 border-t border-slate-200/60 dark:border-slate-700/60 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <!-- Physics Card -->
+                <div class="p-3.5 rounded-2xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/80 dark:border-blue-900/50 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center text-xs shadow-md shadow-blue-500/30">
+                            <i class="fa-solid fa-atom"></i>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">මාතෘකාව හෝ පාඩම</label>
-                            <input type="text" id="topicName" required placeholder="උදා: ජාන විද්‍යාව (Genetics)" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                            <span class="block text-[10px] uppercase font-bold text-blue-600 dark:text-blue-400 tracking-wider">Physics</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statPhysicsCount" class="text-blue-700 dark:text-blue-300 font-extrabold">0</strong></span>
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ඉගෙනගත් දිනය</label>
-                            <input type="date" id="topicDate" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විස්තරයක් (අවශ්‍ය නම්)</label>
-                            <textarea id="topicDesc" rows="2" placeholder="මතක තබාගත යුතු විශේෂ කරුණු..." class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all text-sm flex items-center justify-center">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>මතක වක්‍රය සකස් කරන්න
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Today's Checklist & All Topics Manager -->
-                <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-2 flex flex-col justify-between">
-                    <div>
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-                            <h2 class="text-lg font-bold flex items-center text-pink-600 dark:text-pink-400">
-                                <i class="fa-solid fa-list-check mr-2"></i>අද කළ යුතු වැඩ ලැයිස්තුව (Today's Checklist)
-                            </h2>
-                            <div class="flex items-center space-x-2">
-                                <span id="todayCountBadge" class="px-3 py-1 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-300 text-xs font-bold rounded-full">0 යි</span>
-                                <button onclick="openManageModal()" class="px-3.5 py-2 rounded-2xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-slate-700 text-xs font-semibold hover:bg-indigo-100 transition-all shadow-sm">
-                                    <i class="fa-solid fa-sliders mr-1.5"></i>සියලු පාඩම් කළමනාකරණය
-                                </button>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">අද දිනට නියමිත පුනරාවර්තන හෝ පාඩම් අවසන් වූ පසු ටික් (✓) කරන්න:</p>
-                        <div id="todayReviewsList" class="space-y-3 max-h-[280px] overflow-y-auto pr-2">
-                            <div class="text-center py-10 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-                        <div class="flex items-center space-x-3">
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1.5 shadow-sm shadow-blue-500/50"></span>Physics</span>
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 mr-1.5 shadow-sm shadow-purple-500/50"></span>Chemistry</span>
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-1.5 shadow-sm shadow-emerald-400/50"></span>Biology</span>
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5 shadow-sm shadow-amber-500/50"></span>Maths</span>
-                        </div>
-                        <button onclick="clearAllData()" class="text-red-500 hover:text-red-600 font-medium transition-all hover:scale-105"><i class="fa-solid fa-trash mr-1"></i>සියලු දත්ත මකන්න</button>
                     </div>
                 </div>
 
-            </div>
-
-            <!-- Calendar Grid Card -->
-            <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-                    <div class="flex items-center space-x-4">
-                        <h2 id="currentMonthYear" class="text-xl font-bold text-slate-800 dark:text-slate-100">සැප්තැම්බර් 2026</h2>
-                        <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 rounded-2xl p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
-                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all text-xs"><i class="fa-solid fa-chevron-left"></i></button>
-                            <button onclick="goToCurrentMonth()" class="px-3 py-1 text-xs font-semibold hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all">අද</button>
-                            <button onclick="changeMonth(1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all text-xs"><i class="fa-solid fa-chevron-right"></i></button>
+                <!-- Chemistry Card -->
+                <div class="p-3.5 rounded-2xl bg-purple-50/70 dark:bg-purple-950/30 border border-purple-200/80 dark:border-purple-900/50 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-purple-500 text-white flex items-center justify-center text-xs shadow-md shadow-purple-500/30">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-purple-600 dark:text-purple-400 tracking-wider">Chemistry</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statChemistryCount" class="text-purple-700 dark:text-purple-300 font-extrabold">0</strong></span>
                         </div>
                     </div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400 italic bg-indigo-50 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-indigo-100 dark:border-slate-700">
-                        💡 දවසක් මත ක්ලික් කර එම දිනට අදාළ සියලුම විස්තර බලන්න
+                </div>
+
+                <!-- Biology Card -->
+                <div class="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/50 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md shadow-emerald-500/30">
+                            <i class="fa-solid fa-dna"></i>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">Biology</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statBiologyCount" class="text-emerald-700 dark:text-emerald-300 font-extrabold">0</strong></span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-7 gap-2 text-center font-semibold text-xs text-slate-400 mb-2">
-                    <div>ඉරිදා</div><div>සඳුදා</div><div>අඟහරුවාදා</div><div>බදාදා</div><div>බ්‍රහස්පතින්දා</div><div>සිකුරාදා</div><div>සෙනසුරාදා</div>
+                <!-- Combined Maths Card -->
+                <div class="p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs shadow-md shadow-amber-500/30">
+                            <i class="fa-solid fa-square-root-variable"></i>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-amber-600 dark:text-amber-400 tracking-wider">Comb. Maths</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statMathsCount" class="text-amber-700 dark:text-amber-300 font-extrabold">0</strong></span>
+                        </div>
+                    </div>
                 </div>
-
-                <div id="calendarDays" class="grid grid-cols-7 gap-2"></div>
             </div>
         </div>
 
-        <!-- GUIDE VIEW -->
-        <div id="view-guide" class="hidden space-y-8 max-w-4xl mx-auto">
-            <div class="glass-card rounded-3xl p-8 border border-slate-200/60 dark:border-slate-700/60 shadow-xl relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800 mb-4 inline-block">
-                    <i class="fa-solid fa-graduation-cap mr-1"></i> සම්පූර්ණ අධ්‍යයන මාර්ගෝපදේශය
-                </span>
-                <h2 class="text-3xl font-extrabold mb-4 bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
-                    මොකක්ද මේ Ebbinghaus Forgetting Curve සහ Spaced Repetition කියන්නේ?
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Topic Add Form -->
+            <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-1 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full pointer-events-none"></div>
+                <h2 class="text-lg font-bold mb-4 flex items-center text-indigo-600 dark:text-indigo-400">
+                    <i class="fa-solid fa-plus-circle mr-2"></i>අද ඉගෙනගත් දෙය එක් කරන්න
                 </h2>
+                <form id="topicForm" onsubmit="addTopic(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විෂය (Subject)</label>
+                        <select id="topicSubject" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
+                            <option value="physics">Physics (භෞතික විද්‍යාව)</option>
+                            <option value="chemistry">Chemistry (රසායන විද්‍යාව)</option>
+                            <option value="biology">Biology (ජීව විද්‍යාව)</option>
+                            <option value="maths">Combined Mathematics (සංයුක්ත ගණිතය)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">මාතෘකාව හෝ පාඩම</label>
+                        <input type="text" id="topicName" required placeholder="උදා: ත්‍රිකෝණමිතිය (Trigonometry)" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ඉගෙනගත් දිනය</label>
+                        <input type="date" id="topicDate" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විස්තරයක් (අවශ්‍ය නම්)</label>
+                        <textarea id="topicDesc" rows="2" placeholder="මතක තබාගත යුතු විශේෂ කරුණු..." class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all text-sm flex items-center justify-center">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>මතක වක්‍රය සකස් කරන්න
+                    </button>
+                </form>
+            </div>
+
+            <!-- Today's Checklist & All Topics Manager -->
+            <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-2 flex flex-col justify-between">
+                <div>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
+                        <h2 class="text-lg font-bold flex items-center text-pink-600 dark:text-pink-400">
+                            <i class="fa-solid fa-list-check mr-2"></i>අද කළ යුතු වැඩ ලැයිස්තුව (Today's Checklist)
+                        </h2>
+                        <div class="flex items-center space-x-2">
+                            <span id="todayCountBadge" class="px-3 py-1 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-300 text-xs font-bold rounded-full">0 යි</span>
+                            <button onclick="openManageModal()" class="px-3.5 py-2 rounded-2xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-slate-700 text-xs font-semibold hover:bg-indigo-100 transition-all shadow-sm">
+                                <i class="fa-solid fa-sliders mr-1.5"></i>සියලු පාඩම් කළමනාකරණය
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">අද දිනට නියමිත පුනරාවර්තන හෝ පාඩම් අවසන් වූ පසු ටික් (✓) කරන්න:</p>
+                    <div id="todayReviewsList" class="space-y-3 max-h-[280px] overflow-y-auto pr-2">
+                        <div class="text-center py-10 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>
+                    </div>
+                </div>
                 
-                <div class="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed mb-6 text-sm sm:text-base">
-                    <p>
-                        අපි යම් අලුත් තොරතුරක්, සූත්‍රයක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම විද්‍යාත්මක සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් (Review) නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවలින් 70%ක් පමණ අමතක කර දමන බවයි!
-                    </p>
-                    <p>
-                        මෙම ගැටළුව මඟහරවා ගැනීමට භාවිත කරන ක්‍රමවේදය <b>Spaced Repetition (දුරස්ථ පුනරාවර්තනය)</b> වේ. මෙහිදී තොරතුරු සම්පූර්ණයෙන්ම අමතක වී යාමට ප්‍රථම, නිශ්චිත කාල පරතරයන් යටතේ (උදාහරණ ලෙස: දින 1, 3, 6, 12, 20, 30, 60 සහ 90 ලෙස) නැවත මතක් කරගනු ලැබේ. එවිට මොළය සිතන්නේ මෙය ඉතා වැදගත් තොරතුරක් බවත්, එය කාලීනව අවශ්‍ය වන බවත්ය. ප්‍රතිඵලයක් ලෙස මතකය තාවකාලික මතකයේ සිට දිගුකාලීන මතකය (Long-term Memory) වෙත ස්ථිරවම තැන්පත් වේ.
-                    </p>
-                </div>
-
-                <!-- Scientific SVG Visual Graphic -->
-                <div class="my-8 p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden text-white">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-bold text-sm text-indigo-400 flex items-center"><i class="fa-solid fa-chart-line mr-2"></i>විද්‍යාත්මක Ebbinghaus අමතක වීමේ වක්‍රය සහ Spaced Repetition ප්‍රස්ථාරය</h4>
-                        <span class="text-[11px] bg-indigo-950 text-indigo-300 px-2.5 py-1 rounded-full border border-indigo-800">මතක රඳවාගැනීමේ ප්‍රතිශතය (%) vs කාලය (දින)</span>
+                <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+                    <div class="flex items-center space-x-3">
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1.5 shadow-sm shadow-blue-500/50"></span>Physics</span>
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 mr-1.5 shadow-sm shadow-purple-500/50"></span>Chemistry</span>
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-1.5 shadow-sm shadow-emerald-400/50"></span>Biology</span>
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5 shadow-sm shadow-amber-500/50"></span>Comb. Maths</span>
                     </div>
-                    <div class="relative w-full h-60 sm:h-72 flex items-end">
-                        <svg class="w-full h-full overflow-visible" viewBox="0 0 600 260" preserveAspectRatio="none">
-                            <line x1="0" y1="10" x2="600" y2="10" stroke="#334155" stroke-dasharray="4" />
-                            <line x1="0" y1="70" x2="600" y2="70" stroke="#334155" stroke-dasharray="4" />
-                            <line x1="0" y1="130" x2="600" y2="130" stroke="#334155" stroke-dasharray="4" />
-                            <line x1="0" y1="190" x2="600" y2="190" stroke="#334155" stroke-dasharray="4" />
-                            <line x1="0" y1="250" x2="600" y2="250" stroke="#64748b" stroke-width="2" />
-                            <line x1="0" y1="10" x2="0" y2="250" stroke="#64748b" stroke-width="2" />
+                    <button onclick="clearAllData()" class="text-red-500 hover:text-red-600 font-medium transition-all hover:scale-105"><i class="fa-solid fa-trash mr-1"></i>සියලු දත්ත මකන්න</button>
+                </div>
+            </div>
 
-                            <text x="10" y="25" fill="#94a3b8" font-size="10">100%</text>
-                            <text x="10" y="85" fill="#94a3b8" font-size="10">75%</text>
-                            <text x="10" y="145" fill="#94a3b8" font-size="10">50%</text>
-                            <text x="10" y="205" fill="#94a3b8" font-size="10">25%</text>
+        </div>
 
-                            <path d="M 0,10 C 25,140 60,180 120,195 C 250,210 400,225 600,232" fill="none" stroke="#f43f5e" stroke-width="3.5" stroke-dasharray="6" />
-                            <path d="M 0,10 C 25,140 50,185 60,190 L 60,20 C 120,130 180,175 190,180 L 190,30 C 270,110 350,150 360,155 L 360,40 C 460,90 560,110 600,60" fill="none" stroke="#6366f1" stroke-width="4" />
-                        </svg>
-
-                        <div class="absolute top-2 left-16 text-[10px] text-indigo-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-indigo-500/30">Spaced Repetition මගින් මතකය ඉහළ නැංවීම</div>
-                        <div class="absolute bottom-4 right-4 text-[10px] text-pink-400 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-pink-500/30">--- සාමාන්‍ය අමතක වීමේ වක්‍රය</div>
+        <!-- Calendar Grid Card -->
+        <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+                <div class="flex items-center space-x-4">
+                    <h2 id="currentMonthYear" class="text-xl font-bold text-slate-800 dark:text-slate-100">සැප්තැම්බර් 2026</h2>
+                    <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 rounded-2xl p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <button onclick="changeMonth(-1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all text-xs"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="goToCurrentMonth()" class="px-3 py-1 text-xs font-semibold hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all">අද</button>
+                        <button onclick="changeMonth(1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all text-xs"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 italic bg-indigo-50 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-indigo-100 dark:border-slate-700">
+                    💡 දවසක් මත ක්ලික් කර එම දිනට අදාළ සියලුම විස්තර බලන්න
+                </div>
+            </div>
 
-                <!-- How to Use Section Updated (Creative Heading and Details) -->
-                <div class="space-y-6">
-                    <div class="bg-indigo-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-indigo-100 dark:border-slate-700 shadow-sm">
-                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center text-lg"><i class="fa-solid fa-circle-check mr-2"></i>Memory Vault භාවිත කරන ආකාරය</h3>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <!-- Card 1 -->
-                            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
-                                <div>
-                                    <div class="flex items-center space-x-2.5 mb-2">
-                                        <span class="bg-gradient-to-tr from-indigo-600 to-purple-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">1</span>
-                                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">අලුත් දැනුම අස්වැන්නක් එකතු කිරීම</h4>
-                                    </div>
-                                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">පාසලේදී හෝ පන්තියේදී ඉගෙනගත් අලුත්ම පාඩම 'අද ඉගෙනගත් දෙය එක් කරන්න' පෝරමය හරහා විෂයත් සමඟ පද්ධතියට ඇතුළත් කරන්න.</p>
+            <div class="grid grid-cols-7 gap-2 text-center font-semibold text-xs text-slate-400 mb-2">
+                <div>ඉරිදා</div><div>සඳුදා</div><div>අඟහරුවාදා</div><div>බදාදා</div><div>බ්‍රහස්පතින්දා</div><div>සිකුරාදා</div><div>සෙනසුරාදා</div>
+            </div>
+
+            <div id="calendarDays" class="grid grid-cols-7 gap-2"></div>
+        </div>
+    </div>
+
+    <!-- GUIDE VIEW -->
+    <div id="view-guide" class="hidden space-y-8 max-w-4xl mx-auto">
+        <div class="glass-card rounded-3xl p-8 border border-slate-200/60 dark:border-slate-700/60 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800 mb-4 inline-block">
+                <i class="fa-solid fa-graduation-cap mr-1"></i> සම්පූර්ණ අධ්‍යයන මාර්ගෝපදේශය
+            </span>
+            <h2 class="text-3xl font-extrabold mb-4 bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
+                මොකක්ද මේ Ebbinghaus Forgetting Curve සහ Spaced Repetition කියන්නේ?
+            </h2>
+            
+            <div class="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed mb-6 text-sm sm:text-base">
+                <p>
+                    අපි යම් අලුත් තොරතුරක්, සූත්‍රයක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම විද්‍යාත්මක සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් (Review) නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවలින් 70%ක් පමණ අමතක කර දමන බවයි!
+                </p>
+                <p>
+                    මෙම ගැටළුව මඟහරවා ගැනීමට භාවිත කරන ක්‍රමවේදය <b>Spaced Repetition (දුරස්ථ පුනරාවර්තනය)</b> වේ. මෙහිදී තොරතුරු සම්පූර්ණයෙන්ම අමතක වී යාමට ප්‍රථම, නිශ්චිත කාල පරතරයන් යටතේ (උදාහරණ ලෙස: දින 1, 3, 6, 12, 20, 30, 60 සහ 90 ලෙස) නැවත මතක් කරගනු ලැබේ. එවිට මොළය සිතන්නේ මෙය ඉතා වැදගත් තොරතුරක් බවත්, එය කාලීනව අවශ්‍ය වන බවත්ය. ප්‍රතිඵලයක් ලෙස මතකය තාවකාලික මතකයේ සිට දිගුකාලීන මතකය (Long-term Memory) වෙත ස්ථිරවම තැන්පත් වේ.
+                </p>
+            </div>
+
+            <!-- Scientific SVG Visual Graphic -->
+            <div class="my-8 p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-sm text-indigo-400 flex items-center"><i class="fa-solid fa-chart-line mr-2"></i>විද්‍යාත්මක Ebbinghaus අමතක වීමේ වක්‍රය සහ Spaced Repetition ප්‍රස්ථාරය</h4>
+                    <span class="text-[11px] bg-indigo-950 text-indigo-300 px-2.5 py-1 rounded-full border border-indigo-800">මතක රඳවාගැනීමේ ප්‍රතිශතය (%) vs කාලය (දින)</span>
+                </div>
+                <div class="relative w-full h-60 sm:h-72 flex items-end">
+                    <svg class="w-full h-full overflow-visible" viewBox="0 0 600 260" preserveAspectRatio="none">
+                        <line x1="0" y1="10" x2="600" y2="10" stroke="#334155" stroke-dasharray="4" />
+                        <line x1="0" y1="70" x2="600" y2="70" stroke="#334155" stroke-dasharray="4" />
+                        <line x1="0" y1="130" x2="600" y2="130" stroke="#334155" stroke-dasharray="4" />
+                        <line x1="0" y1="190" x2="600" y2="190" stroke="#334155" stroke-dasharray="4" />
+                        <line x1="0" y1="250" x2="600" y2="250" stroke="#64748b" stroke-width="2" />
+                        <line x1="0" y1="10" x2="0" y2="250" stroke="#64748b" stroke-width="2" />
+
+                        <text x="10" y="25" fill="#94a3b8" font-size="10">100%</text>
+                        <text x="10" y="85" fill="#94a3b8" font-size="10">75%</text>
+                        <text x="10" y="145" fill="#94a3b8" font-size="10">50%</text>
+                        <text x="10" y="205" fill="#94a3b8" font-size="10">25%</text>
+
+                        <path d="M 0,10 C 25,140 60,180 120,195 C 250,210 400,225 600,232" fill="none" stroke="#f43f5e" stroke-width="3.5" stroke-dasharray="6" />
+                        <path d="M 0,10 C 25,140 50,185 60,190 L 60,20 C 120,130 180,175 190,180 L 190,30 C 270,110 350,150 360,155 L 360,40 C 460,90 560,110 600,60" fill="none" stroke="#6366f1" stroke-width="4" />
+                    </svg>
+
+                    <div class="absolute top-2 left-16 text-[10px] text-indigo-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-indigo-500/30">Spaced Repetition මගින් මතකය ඉහළ නැංවීම</div>
+                    <div class="absolute bottom-4 right-4 text-[10px] text-pink-400 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-pink-500/30">--- සාමාන්‍ය අමතක වීමේ වක්‍රය</div>
+                </div>
+            </div>
+
+            <!-- How to Use Section Updated -->
+            <div class="space-y-6">
+                <div class="bg-indigo-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-indigo-100 dark:border-slate-700 shadow-sm">
+                    <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center text-lg"><i class="fa-solid fa-circle-check mr-2"></i>Memory Vault භාවිත කරන ආකාරය</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Card 1 -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
+                            <div>
+                                <div class="flex items-center space-x-2.5 mb-2">
+                                    <span class="bg-gradient-to-tr from-indigo-600 to-purple-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">1</span>
+                                    <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">අලුත් දැනුම අස්වැන්නක් එකතු කිරීම</h4>
                                 </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">පාසලේදී හෝ පන්තියේදී ඉගෙනගත් අලුත්ම පාඩම 'අද ඉගෙනගත් දෙය එක් කරන්න' පෝරමය හරහා විෂයත් සමඟ පද්ධතියට ඇතුළත් කරන්න.</p>
                             </div>
+                        </div>
 
-                            <!-- Card 2 -->
-                            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
-                                <div>
-                                    <div class="flex items-center space-x-2.5 mb-2">
-                                        <span class="bg-gradient-to-tr from-purple-600 to-pink-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">2</span>
-                                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">මතක වක්‍රයේ මැජික් එක</h4>
-                                    </div>
-                                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">ඔබ දිනය දුන් සැණින්, Ebbinghaus විද්‍යාත්මක න්‍යායට අනුව මතකය දිගුකල් රැකෙන දින (1, 3, 6, 12 වැනි දින ආදී වශයෙන්) කැලැන්ඩරයේ ස්වයංක්‍රීයව සටහන් වේ.</p>
+                        <!-- Card 2 -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
+                            <div>
+                                <div class="flex items-center space-x-2.5 mb-2">
+                                    <span class="bg-gradient-to-tr from-purple-600 to-pink-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">2</span>
+                                    <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">මතක වක්‍රයේ මැජික් එක</h4>
                                 </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">ඔබ දිනය දුන් සැණින්, Ebbinghaus විද්‍යාත්මක න්‍යායට අනුව මතකය දිගුකල් රැකෙන දින (1, 3, 6, 12 වැනි දින ආදී වශයෙන්) කැලැන්ඩරයේ ස්වයංක්‍රීයව සටහන් වේ.</p>
                             </div>
+                        </div>
 
-                            <!-- Card 3 -->
-                            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
-                                <div>
-                                    <div class="flex items-center space-x-2.5 mb-2">
-                                        <span class="bg-gradient-to-tr from-pink-600 to-rose-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">3</span>
-                                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">දෛනික මතක සටන් පුහුණුව</h4>
-                                    </div>
-                                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">හැමදාම උදේ 'අද කළ යුතු වැඩ ලැයිස්තුව' බලා, එදිනට නියමිත පුනරාවර්තන මඟහැරී යාමට නොදී කියවා අවසන් වූ පසු ✓ ලකුණු කර ජයග්‍රහණය අත්පත් කරගන්න.</p>
+                        <!-- Card 3 -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
+                            <div>
+                                <div class="flex items-center space-x-2.5 mb-2">
+                                    <span class="bg-gradient-to-tr from-pink-600 to-rose-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">3</span>
+                                    <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">දෛනික මතක සටන් පුහුණුව</h4>
                                 </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">හැමදාම උදේ 'අද කළ යුතු වැඩ ලැයිස්තුව' බලා, එදිනට නියමිත පුනරාවර්තන මඟහැරී යාමට නොදී කියවා අවසන් වූ පසු ✓ ලකුණු කර ජයග්‍රහණය අත්පත් කරගන්න.</p>
                             </div>
+                        </div>
 
-                            <!-- Card 4 -->
-                            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
-                                <div>
-                                    <div class="flex items-center space-x-2.5 mb-2">
-                                        <span class="bg-gradient-to-tr from-emerald-600 to-teal-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">4</span>
-                                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">මතක කාල සටහන අතේ දුරින්</h4>
-                                    </div>
-                                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">ඉදිරි දිනවලදී ඔබට පුනරාවර්තනය කිරීමට නියමිත පාඩම් කැලැන්ඩරයේ දින මත ක්ලික් කිරීමෙන් එක බැල්මකින් බලාගන්න.</p>
+                        <!-- Card 4 -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
+                            <div>
+                                <div class="flex items-center space-x-2.5 mb-2">
+                                    <span class="bg-gradient-to-tr from-emerald-600 to-teal-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">4</span>
+                                    <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">මතක කාල සටහන අතේ දුරින්</h4>
                                 </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">ඉදිරි දිනවලදී ඔබට පුනරාවර්තනය කිරීමට නියමිත පාඩම් කැලැන්ඩරයේ දින මත ක්ලික් කිරීමෙන් එක බැල්මකින් බලාගන්න.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <!-- EXAM COUNTDOWN POPUP (2027.08.03) -->
-    <div id="examCountdownModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4 animate-fade-in">
-        <div class="glass-card rounded-3xl max-w-md w-full p-6 sm:p-8 border border-indigo-200 dark:border-indigo-800 shadow-2xl text-center relative overflow-hidden">
-            <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl pointer-events-none"></div>
-            
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-pink-600 text-white flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-indigo-500/30">
-                <i class="fa-solid fa-hourglass-half"></i>
+<!-- EXAM COUNTDOWN POPUP (2027.08.03) -->
+<div id="examCountdownModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4 animate-fade-in">
+    <div class="glass-card rounded-3xl max-w-md w-full p-6 sm:p-8 border border-indigo-200 dark:border-indigo-800 shadow-2xl text-center relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl pointer-events-none"></div>
+        
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-pink-600 text-white flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-indigo-500/30">
+            <i class="fa-solid fa-hourglass-half"></i>
+        </div>
+        
+        <h3 class="font-black text-xl bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent mb-1">විභාගයට ඉතිරි කාලය</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">2027 අගෝස්තු 03 වන දිනට නියමිත විභාගය සඳහා ඉතිරිව ඇති කාලය</p>
+        
+        <div class="grid grid-cols-4 gap-2 mb-6">
+            <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
+                <span id="cdDays" class="block text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400">00</span>
+                <span class="text-[10px] text-slate-400 uppercase font-bold">දින</span>
             </div>
-            
-            <h3 class="font-black text-xl bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent mb-1">විභාගයට ඉතිරි කාලය</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">2027 අගෝස්තු 03 වන දිනට නියමිත විභාගය සඳහා ඉතිරිව ඇති කාලය</p>
-            
-            <div class="grid grid-cols-4 gap-2 mb-6">
-                <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
-                    <span id="cdDays" class="block text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400">00</span>
-                    <span class="text-[10px] text-slate-400 uppercase font-bold">දින</span>
-                </div>
-                <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
-                    <span id="cdHours" class="block text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400">00</span>
-                    <span class="text-[10px] text-slate-400 uppercase font-bold">පැය</span>
-                </div>
-                <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
-                    <span id="cdMins" class="block text-xl sm:text-2xl font-black text-pink-600 dark:text-pink-400">00</span>
-                    <span class="text-[10px] text-slate-400 uppercase font-bold">මිනි</span>
-                </div>
-                <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
-                    <span id="cdSecs" class="block text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400">00</span>
-                    <span class="text-[10px] text-slate-400 uppercase font-bold">තත්</span>
-                </div>
+            <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
+                <span id="cdHours" class="block text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400">00</span>
+                <span class="text-[10px] text-slate-400 uppercase font-bold">පැය</span>
             </div>
+            <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
+                <span id="cdMins" class="block text-xl sm:text-2xl font-black text-pink-600 dark:text-pink-400">00</span>
+                <span class="text-[10px] text-slate-400 uppercase font-bold">මිනි</span>
+            </div>
+            <div class="bg-indigo-50 dark:bg-slate-800 p-3 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-inner">
+                <span id="cdSecs" class="block text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400">00</span>
+                <span class="text-[10px] text-slate-400 uppercase font-bold">තත්</span>
+            </div>
+        </div>
 
-            <button onclick="closeExamModal()" class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all text-xs">
-                දැන් අධ්‍යයන කටයුතු අරඹමු! 🚀
+        <button onclick="closeExamModal()" class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all text-xs">
+            දැන් අධ්‍යයන කටයුතු අරඹමු! 🚀
+        </button>
+    </div>
+</div>
+
+<!-- Day Detail Modal -->
+<div id="dayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+    <div class="glass-card rounded-3xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div>
+                <h3 id="modalDateTitle" class="text-lg font-bold text-slate-800 dark:text-slate-100">දින විස්තරය</h3>
+                <p id="modalDateSubtitle" class="text-xs text-slate-500 dark:text-slate-400">අදාළ දිනට නියමිත වැඩසටහන</p>
+            </div>
+            <button onclick="closeDayModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 transition-all text-slate-600 dark:text-slate-300">
+                <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
+        <div id="modalContentList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1"></div>
     </div>
+</div>
 
-    <!-- Day Detail Modal -->
-    <div id="dayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
-        <div class="glass-card rounded-3xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div>
-                    <h3 id="modalDateTitle" class="text-lg font-bold text-slate-800 dark:text-slate-100">දින විස්තරය</h3>
-                    <p id="modalDateSubtitle" class="text-xs text-slate-500 dark:text-slate-400">අදාළ දිනට නියමිත වැඩසටහන</p>
-                </div>
-                <button onclick="closeDayModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 transition-all text-slate-600 dark:text-slate-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+<!-- Manage Topics Modal -->
+<div id="manageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+    <div class="glass-card rounded-3xl max-w-xl w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                    <i class="fa-solid fa-list mr-2 text-indigo-600"></i>සියලු පාඩම් ලැයිස්තුව (කළමනාකරණය)
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">මෙහිදී ඔබට අවශ්‍ය නැති පාඩමක් පමණක් තනි තනිව මකා දැමිය හැක.</p>
             </div>
-            <div id="modalContentList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1"></div>
+            <button onclick="closeManageModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 transition-all text-slate-600 dark:text-slate-300">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
+        <div id="manageTopicsList" class="space-y-3 max-h-[380px] overflow-y-auto pr-1"></div>
     </div>
+</div>
 
-    <!-- Manage Topics Modal -->
-    <div id="manageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
-        <div class="glass-card rounded-3xl max-w-xl w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
-                        <i class="fa-solid fa-list mr-2 text-indigo-600"></i>සියලු පාඩම් ලැයිස්තුව (කළමනාකරණය)
-                    </h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">මෙහිදී ඔබට අවශ්‍ය නැති පාඩමක් පමණක් තනි තනිව මකා දැමිය හැක.</p>
-                </div>
-                <button onclick="closeManageModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 transition-all text-slate-600 dark:text-slate-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div id="manageTopicsList" class="space-y-3 max-h-[380px] overflow-y-auto pr-1"></div>
+<!-- Message Modal -->
+<div id="msgModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+    <div class="glass-card rounded-3xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl text-center">
+        <div id="msgIcon" class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4">
+            <i class="fa-solid fa-circle-info"></i>
         </div>
+        <h3 id="msgTitle" class="font-bold text-base text-slate-800 dark:text-slate-100 mb-2">පණිවිඩය</h3>
+        <p id="msgText" class="text-xs text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">...</p>
+        <button onclick="closeMsgModal()" class="w-full py-2.5 px-4 bg-indigo-600 text-white font-semibold rounded-xl text-xs hover:bg-indigo-700 transition-all">හරි</button>
     </div>
+</div>
 
-    <!-- Message Modal -->
-    <div id="msgModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
-        <div class="glass-card rounded-3xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl text-center">
-            <div id="msgIcon" class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4">
-                <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <h3 id="msgTitle" class="font-bold text-base text-slate-800 dark:text-slate-100 mb-2">පණිවිඩය</h3>
-            <p id="msgText" class="text-xs text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">...</p>
-            <button onclick="closeMsgModal()" class="w-full py-2.5 px-4 bg-indigo-600 text-white font-semibold rounded-xl text-xs hover:bg-indigo-700 transition-all">හරි</button>
-        </div>
-    </div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    <!-- FIREBASE INTEGRATED SCRIPT -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const firebaseConfig = {
+        apiKey: "AIzaSyD3FvcTv_yi7vyIsZSJ6q7tDIhte1sb6jo",
+        authDomain: "memory-vault-mine.firebaseapp.com",
+        projectId: "memory-vault-mine",
+        storageBucket: "memory-vault-mine.firebasestorage.app",
+        messagingSenderId: "636868190426",
+        appId: "1:636868190426:web:b14f5ea2ee98fcf952c5e3",
+        measurementId: "G-WHNJ51EB52"
+    };
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyD3FvcTv_yi7vyIsZSJ6q7tDIhte1sb6jo",
-            authDomain: "memory-vault-mine.firebaseapp.com",
-            projectId: "memory-vault-mine",
-            storageBucket: "memory-vault-mine.firebasestorage.app",
-            messagingSenderId: "636868190426",
-            appId: "1:636868190426:web:b14f5ea2ee98fcf952c5e3",
-            measurementId: "G-WHNJ51EB52"
-        };
+    const appId = 'memory-vault-mine';
 
-        const appId = 'memory-vault-mine';
+    const app = initializeApp(firebaseConfig);
+    let db = null;
+    let auth = null;
+    let googleProvider = null;
+    
+    try {
+        db = getFirestore(app);
+        auth = getAuth(app);
+        googleProvider = new GoogleAuthProvider();
+    } catch (e) {
+        console.warn("Firebase warning:", e);
+    }
 
-        const app = initializeApp(firebaseConfig);
-        let db = null;
-        let auth = null;
-        let googleProvider = null;
-        
-        try {
-            db = getFirestore(app);
-            auth = getAuth(app);
-            googleProvider = new GoogleAuthProvider();
-        } catch (e) {
-            console.warn("Firebase warning:", e);
+    let currentUser = null;
+    let unsubscribeFirestore = null;
+
+    const subjectConfig = {
+        physics: { name: 'Physics', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800', dot: 'bg-blue-500' },
+        chemistry: { name: 'Chemistry', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border-purple-200 dark:border-purple-800', dot: 'bg-purple-500' },
+        biology: { name: 'Biology', badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800', dot: 'bg-emerald-400' },
+        maths: { name: 'Comb. Maths', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800', dot: 'bg-amber-500' }
+    };
+
+    let topics = [];
+    let completedTasks = {};
+    let currentDate = new Date();
+
+    document.getElementById('topicDate').valueAsDate = new Date();
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').className = "fa-solid fa-sun";
         }
 
-        let currentUser = null;
-        let unsubscribeFirestore = null;
+        topics = JSON.parse(localStorage.getItem('forgetting_topics')) || [];
+        completedTasks = JSON.parse(localStorage.getItem('forgetting_completed_tasks')) || {};
+        renderCalendar();
+        renderTodayReviews();
+        updateStatsBar();
+        startExamCountdown();
 
-        const subjectConfig = {
-            physics: { name: 'Physics', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800', dot: 'bg-blue-500' },
-            chemistry: { name: 'Chemistry', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border-purple-200 dark:border-purple-800', dot: 'bg-purple-500' },
-            biology: { name: 'Biology', badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800', dot: 'bg-emerald-400' },
-            maths: { name: 'Combined Maths', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800', dot: 'bg-amber-500' }
-        };
+        if (!auth) return;
+        try {
+            await signInAnonymously(auth);
+        } catch (e) {
+            console.warn("Auth notice:", e);
+        }
 
-        let topics = [];
-        let completedTasks = {};
-        let currentDate = new Date();
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            updateAuthUI();
+            if (user && db) syncUserData(user.uid);
+        });
+    });
 
-        document.getElementById('topicDate').valueAsDate = new Date();
+    // Exam Countdown Logic for 2027.08.03
+    function startExamCountdown() {
+        const examDate = new Date('2027-08-03T00:00:00').getTime();
+        
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = examDate - now;
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            if (localStorage.getItem('theme') === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.getElementById('themeIcon').className = "fa-solid fa-sun";
+            if (distance < 0) {
+                document.getElementById('cdDays').innerText = "00";
+                document.getElementById('cdHours').innerText = "00";
+                document.getElementById('cdMins').innerText = "00";
+                document.getElementById('cdSecs').innerText = "00";
+                return;
             }
 
-            topics = JSON.parse(localStorage.getItem('forgetting_topics')) || [];
-            completedTasks = JSON.parse(localStorage.getItem('forgetting_completed_tasks')) || {};
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('cdDays').innerText = String(days).padStart(2, '0');
+            document.getElementById('cdHours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('cdMins').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('cdSecs').innerText = String(seconds).padStart(2, '0');
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    }
+
+    window.closeExamModal = function() {
+        document.getElementById('examCountdownModal').classList.add('hidden');
+    };
+
+    window.toggleDarkMode = function() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            document.getElementById('themeIcon').setAttribute('class', 'fa-solid fa-moon');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            document.getElementById('themeIcon').setAttribute('class', 'fa-solid fa-sun');
+        }
+    };
+
+    window.handleGoogleSignIn = async function() {
+        if (!auth || !googleProvider) {
+            showMessage('සමාවන්න', 'Local Storage මඟින් දත්ත සුරක්ෂිත වේ.');
+            return;
+        }
+        try {
+            await signInWithPopup(auth, googleProvider);
+            showMessage('සාර්ථකයි!', 'Google ගිණුම හරහා සාර්ථකව Sign In විය!');
+        } catch (error) {
+            console.warn("Sign-In Warning:", error);
+            showMessage('දෝෂයකි', 'ගිණුම් ප්‍රවේශයේදී දෝෂයක් ඇතිවිය.', true);
+        }
+    };
+
+    window.handleSignOut = async function() {
+        if (!auth) return;
+        try {
+            await signOut(auth);
+            await signInAnonymously(auth);
+            showMessage('සාර්ථකයි', 'ඔබ සාර්ථකව ගිණුමෙන් ඉවත් විය.');
+        } catch (error) {}
+    };
+
+    function updateAuthUI() {
+        const authContainer = document.getElementById('authContainer');
+        if (currentUser && !currentUser.isAnonymous) {
+            const photoURL = currentUser.photoURL || 'https://placehold.co/32x32/6366f1/ffffff?text=U';
+            authContainer.innerHTML = `
+                <div class="relative group">
+                    <button onclick="handleSignOut()" title="ඉවත් වීමට ක්ලික් කරන්න" class="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500 shadow-md hover:scale-105 transition-all focus:outline-none">
+                        <img src="${photoURL}" class="w-full h-full object-cover"/>
+                    </button>
+                </div>
+            `;
+        } else {
+            authContainer.innerHTML = `
+                <button onclick="handleGoogleSignIn()" id="authBtn" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                    <i class="fa-brands fa-google text-indigo-600"></i>
+                    <span id="authBtnText">Sign In</span>
+                </button>
+            `;
+        }
+    }
+
+    function syncUserData(userId) {
+        if (!db) return;
+        if (unsubscribeFirestore) unsubscribeFirestore();
+        const docRef = doc(db, 'artifacts', appId, 'users', userId, 'studyData', 'main');
+
+        unsubscribeFirestore = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                topics = data.topics || topics;
+                completedTasks = data.completedTasks || completedTasks;
+            } else {
+                if (topics.length > 0) saveToCloud();
+            }
             renderCalendar();
             renderTodayReviews();
             updateStatsBar();
-            startExamCountdown();
+        }, (error) => {});
+    }
 
-            if (!auth) return;
-            try {
-                await signInAnonymously(auth);
-            } catch (e) {
-                console.warn("Auth notice:", e);
+    async function saveToCloud() {
+        localStorage.setItem('forgetting_topics', JSON.stringify(topics));
+        localStorage.setItem('forgetting_completed_tasks', JSON.stringify(completedTasks));
+
+        if (!currentUser || !db) return;
+        try {
+            const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'studyData', 'main');
+            await setDoc(docRef, { topics: topics, completedTasks: completedTasks, updatedAt: new Date().toISOString() });
+        } catch (e) {}
+    }
+
+    function updateStatsBar() {
+        const todayStr = new Date().toISOString().split('T')[0];
+        let todayTotal = 0;
+        let todayDone = 0;
+
+        let physicsCount = 0;
+        let chemistryCount = 0;
+        let biologyCount = 0;
+        let mathsCount = 0;
+
+        topics.forEach(t => {
+            if(t.subject === 'physics') physicsCount++;
+            if(t.subject === 'chemistry') chemistryCount++;
+            if(t.subject === 'biology') biologyCount++;
+            if(t.subject === 'maths') mathsCount++;
+
+            if(t.reviewDates.includes(todayStr) || t.baseDate === todayStr) {
+                todayTotal++;
+                const type = t.baseDate === todayStr ? 'මුල් ඉගෙනුම' : 'පුනරාවර්තනය';
+                if(completedTasks[`${t.id}_${todayStr}_${type}`]) {
+                    todayDone++;
+                }
             }
-
-            onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                updateAuthUI();
-                if (user && db) syncUserData(user.uid);
-            });
         });
 
-        // Exam Countdown Logic for 2027.08.03
-        function startExamCountdown() {
-            const examDate = new Date('2027-08-03T00:00:00').getTime();
-            
-            function updateTimer() {
-                const now = new Date().getTime();
-                const distance = examDate - now;
+        document.getElementById('statTotalTopics').innerText = topics.length;
+        document.getElementById('statTodayCount').innerText = todayTotal;
+        const rate = todayTotal > 0 ? Math.round((todayDone / todayTotal) * 100) : 0;
+        document.getElementById('statCompletionRate').innerText = `${rate}%`;
 
-                if (distance < 0) {
-                    document.getElementById('cdDays').innerText = "00";
-                    document.getElementById('cdHours').innerText = "00";
-                    document.getElementById('cdMins').innerText = "00";
-                    document.getElementById('cdSecs').innerText = "00";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById('cdDays').innerText = String(days).padStart(2, '0');
-                document.getElementById('cdHours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('cdMins').innerText = String(minutes).padStart(2, '0');
-                document.getElementById('cdSecs').innerText = String(seconds).padStart(2, '0');
-            }
-
-            updateTimer();
-            setInterval(updateTimer, 1000);
+        document.getElementById('statPhysicsCount').innerText = physicsCount;
+        document.getElementById('statChemistryCount').innerText = chemistryCount;
+        document.getElementById('statBiologyCount').innerText = biologyCount;
+        document.getElementById('statMathsCount').innerText = mathsCount;
+        
+        if(todayTotal > 0 && todayDone === todayTotal) {
+            document.getElementById('streakBadge').innerHTML = `<i class="fa-solid fa-award text-amber-500 mr-1"></i> අද සියලුම පුනරාවර්තන සාර්ථකව අවසන්! 🎉`;
+        } else {
+            document.getElementById('streakBadge').innerHTML = `අද දිනට ඉතිරි පුනරාවර්තන: ${todayTotal - todayDone}`;
         }
+    }
 
-        window.closeExamModal = function() {
-            document.getElementById('examCountdownModal').classList.add('hidden');
-        };
+    window.showMessage = function(title, text, isError = false) {
+        document.getElementById('msgTitle').innerText = title;
+        document.getElementById('msgText').innerText = text;
+        const iconDiv = document.getElementById('msgIcon');
+        iconDiv.className = isError 
+            ? "w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 flex items-center justify-center text-xl mx-auto mb-4"
+            : "w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4";
+        iconDiv.innerHTML = isError ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-circle-info"></i>';
+        document.getElementById('msgModal').classList.remove('hidden');
+    };
 
-        window.toggleDarkMode = function() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                document.getElementById('themeIcon').setAttribute('class', 'fa-solid fa-moon');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                document.getElementById('themeIcon').setAttribute('class', 'fa-solid fa-sun');
-            }
-        };
+    window.closeMsgModal = function() { document.getElementById('msgModal').classList.add('hidden'); };
 
-        window.handleGoogleSignIn = async function() {
-            if (!auth || !googleProvider) {
-                showMessage('सूचना', 'Local Storage මඟින් දත්ත සුරක්ෂිත වේ.');
-                return;
-            }
-            try {
-                await signInWithPopup(auth, googleProvider);
-                showMessage('සාර්ථකයි!', 'Google ගිණුම හරහා සාර්ථකව Sign In විය!');
-            } catch (error) {
-                console.warn("Sign-In Warning:", error);
-                showMessage('දෝෂයකි', 'ගිණුම් ප්‍රවේශයේදී දෝෂයක් ඇතිවිය.', true);
-            }
-        };
+    window.switchTab = function(tab) {
+        const calView = document.getElementById('view-calendar');
+        const guideView = document.getElementById('view-guide');
+        const btnCal = document.getElementById('btn-calendar');
+        const btnGuide = document.getElementById('btn-guide');
 
-        window.handleSignOut = async function() {
-            if (!auth) return;
-            try {
-                await signOut(auth);
-                await signInAnonymously(auth);
-                showMessage('සාර්ථකයි', 'ඔබ සාර්ථකව ගිණුමෙන් ඉවත් විය.');
-            } catch (error) {}
-        };
-
-        // Profile pic only display without brackets text update
-        function updateAuthUI() {
-            const authContainer = document.getElementById('authContainer');
-            if (currentUser && !currentUser.isAnonymous) {
-                const photoURL = currentUser.photoURL || 'https://placehold.co/32x32/6366f1/ffffff?text=U';
-                authContainer.innerHTML = `
-                    <div class="relative group">
-                        <button onclick="handleSignOut()" title="ඉවත් වීමට ක්ලික් කරන්න" class="w-10 h-10 rounded-full overflow-hidden border-2 border-indigo-500 shadow-md hover:scale-105 transition-all focus:outline-none">
-                            <img src="${photoURL}" class="w-full h-full object-cover"/>
-                        </button>
-                    </div>
-                `;
-            } else {
-                authContainer.innerHTML = `
-                    <button onclick="handleGoogleSignIn()" id="authBtn" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
-                        <i class="fa-brands fa-google text-indigo-600"></i>
-                        <span id="authBtnText">Sign In</span>
-                    </button>
-                `;
-            }
+        if(tab === 'calendar') {
+            calView.classList.remove('hidden');
+            guideView.classList.add('hidden');
+            btnCal.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
+            btnGuide.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
+        } else {
+            calView.classList.add('hidden');
+            guideView.classList.remove('hidden');
+            btnGuide.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
+            btnCal.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
         }
+    };
 
-        function syncUserData(userId) {
-            if (!db) return;
-            if (unsubscribeFirestore) unsubscribeFirestore();
-            const docRef = doc(db, 'artifacts', appId, 'users', userId, 'studyData', 'main');
+    window.addTopic = function(e) {
+        e.preventDefault();
+        const subject = document.getElementById('topicSubject').value;
+        const name = document.getElementById('topicName').value;
+        const dateStr = document.getElementById('topicDate').value;
+        const desc = document.getElementById('topicDesc').value;
 
-            unsubscribeFirestore = onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    topics = data.topics || topics;
-                    completedTasks = data.completedTasks || completedTasks;
-                } else {
-                    if (topics.length > 0) saveToCloud();
-                }
-                renderCalendar();
-                renderTodayReviews();
-                updateStatsBar();
-            }, (error) => {});
-        }
+        if(!name || !dateStr || !subject) return;
 
-        async function saveToCloud() {
-            localStorage.setItem('forgetting_topics', JSON.stringify(topics));
-            localStorage.setItem('forgetting_completed_tasks', JSON.stringify(completedTasks));
+        const baseDate = new Date(dateStr);
+        const intervals = [1, 3, 6, 12, 20, 30, 60, 90];
+        const reviewDates = intervals.map(days => {
+            const d = new Date(baseDate);
+            d.setDate(d.getDate() + days);
+            return d.toISOString().split('T')[0];
+        });
 
-            if (!currentUser || !db) return;
-            try {
-                const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'studyData', 'main');
-                await setDoc(docRef, { topics: topics, completedTasks: completedTasks, updatedAt: new Date().toISOString() });
-            } catch (e) {}
-        }
-
-        function updateStatsBar() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            let todayTotal = 0;
-            let todayDone = 0;
-
-            topics.forEach(t => {
-                if(t.reviewDates.includes(todayStr) || t.baseDate === todayStr) {
-                    todayTotal++;
-                    const type = t.baseDate === todayStr ? 'මුල් ඉගෙනුම' : 'පුනරාවර්තනය';
-                    if(completedTasks[`${t.id}_${todayStr}_${type}`]) {
-                        todayDone++;
-                    }
-                }
-            });
-
-            document.getElementById('statTotalTopics').innerText = topics.length;
-            document.getElementById('statTodayCount').innerText = todayTotal;
-            const rate = todayTotal > 0 ? Math.round((todayDone / todayTotal) * 100) : 0;
-            document.getElementById('statCompletionRate').innerText = `${rate}%`;
-            
-            if(todayTotal > 0 && todayDone === todayTotal) {
-                document.getElementById('streakBadge').innerHTML = `<i class="fa-solid fa-award text-amber-500 mr-1"></i> අද සියලුම පුනරාවර්තන සාර්ථකව අවසන්! 🎉`;
-            } else {
-                document.getElementById('streakBadge').innerHTML = `අද දිනට ඉතිරි පුනරාවර්තන: ${todayTotal - todayDone}`;
-            }
-        }
-
-        window.showMessage = function(title, text, isError = false) {
-            document.getElementById('msgTitle').innerText = title;
-            document.getElementById('msgText').innerText = text;
-            const iconDiv = document.getElementById('msgIcon');
-            iconDiv.className = isError 
-                ? "w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 flex items-center justify-center text-xl mx-auto mb-4"
-                : "w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4";
-            iconDiv.innerHTML = isError ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-circle-info"></i>';
-            document.getElementById('msgModal').classList.remove('hidden');
+        const newTopic = {
+            id: Date.now(),
+            subject: subject,
+            name: name,
+            baseDate: dateStr,
+            description: desc,
+            reviewDates: reviewDates
         };
 
-        window.closeMsgModal = function() { document.getElementById('msgModal').classList.add('hidden'); };
+        topics.push(newTopic);
+        saveAndRender();
+        document.getElementById('topicForm').reset();
+        document.getElementById('topicDate').valueAsDate = new Date();
+        showMessage('සාර්ථකයි!', 'නව පාඩම සහ මතක වක්‍ර කාල පරතරයන් සාර්ථකව එකතු කරන ලදී!');
+    };
 
-        window.switchTab = function(tab) {
-            const calView = document.getElementById('view-calendar');
-            const guideView = document.getElementById('view-guide');
-            const btnCal = document.getElementById('btn-calendar');
-            const btnGuide = document.getElementById('btn-guide');
+    function saveAndRender() {
+        saveToCloud();
+        renderCalendar();
+        renderTodayReviews();
+        updateStatsBar();
+    }
 
-            if(tab === 'calendar') {
-                calView.classList.remove('hidden');
-                guideView.classList.add('hidden');
-                btnCal.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-                btnGuide.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
-            } else {
-                calView.classList.add('hidden');
-                guideView.classList.remove('hidden');
-                btnGuide.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-                btnCal.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
-            }
-        };
+    window.toggleTaskCompletion = function(taskKey) {
+        if(completedTasks[taskKey]) delete completedTasks[taskKey];
+        else completedTasks[taskKey] = true;
+        saveAndRender();
+    };
 
-        window.addTopic = function(e) {
-            e.preventDefault();
-            const subject = document.getElementById('topicSubject').value;
-            const name = document.getElementById('topicName').value;
-            const dateStr = document.getElementById('topicDate').value;
-            const desc = document.getElementById('topicDesc').value;
+    window.deleteTopic = function(topicId) {
+        topics = topics.filter(t => t.id !== topicId);
+        saveAndRender();
+        openManageModal();
+        showMessage('මකා දමන ලදී', 'අදාළ පාඩම සාර්ථකව ඉවත් කරන ලදී.');
+    };
 
-            if(!name || !dateStr || !subject) return;
-
-            const baseDate = new Date(dateStr);
-            const intervals = [1, 3, 6, 12, 20, 30, 60, 90];
-            const reviewDates = intervals.map(days => {
-                const d = new Date(baseDate);
-                d.setDate(d.getDate() + days);
-                return d.toISOString().split('T')[0];
-            });
-
-            const newTopic = {
-                id: Date.now(),
-                subject: subject,
-                name: name,
-                baseDate: dateStr,
-                description: desc,
-                reviewDates: reviewDates
-            };
-
-            topics.push(newTopic);
+    window.clearAllData = function() {
+        if(confirm('සියලුම දත්ත මකා දැමීමට අවශ්‍ය බව ස්ථිරද?')) {
+            topics = [];
+            completedTasks = {};
             saveAndRender();
-            document.getElementById('topicForm').reset();
-            document.getElementById('topicDate').valueAsDate = new Date();
-            showMessage('සාර්ථකයි!', 'නව පාඩම සහ මතක වක්‍ර කාල පරතරයන් සාර්ථකව එකතු කරන ලදී!');
-        };
-
-        function saveAndRender() {
-            saveToCloud();
-            renderCalendar();
-            renderTodayReviews();
-            updateStatsBar();
+            showMessage('මකා දමන ලදී', 'සියලුම දත්ත සාර්ථකව ඉවත් කරන ලදී.');
         }
+    };
 
-        window.toggleTaskCompletion = function(taskKey) {
-            if(completedTasks[taskKey]) delete completedTasks[taskKey];
-            else completedTasks[taskKey] = true;
-            saveAndRender();
-        };
-
-        window.deleteTopic = function(topicId) {
-            topics = topics.filter(t => t.id !== topicId);
-            saveAndRender();
-            openManageModal();
-            showMessage('මකා දමන ලදී', 'අදාළ පාඩම සාර්ථකව ඉවත් කරන ලදී.');
-        };
-
-        window.clearAllData = function() {
-            if(confirm('සියලුම දත්ත මකා දැමීමට අවශ්‍ය බව ස්ථිරද?')) {
-                topics = [];
-                completedTasks = {};
-                saveAndRender();
-                showMessage('මකා දමන ලදී', 'සියලුම දත්ත සාර්ථකව ඉවත් කරන ලදී.');
-            }
-        };
-
-        window.openManageModal = function() {
-            const container = document.getElementById('manageTopicsList');
-            if(topics.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">තවම පාඩම් එකතු කර නැත.</div>`;
-            } else {
-                container.innerHTML = topics.map(t => {
-                    const subjInfo = subjectConfig[t.subject] || { name: t.subject, badge: 'bg-slate-100 text-slate-700' };
-                    return `
-                        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
-                            <div>
-                                <div class="flex items-center space-x-2 mb-1">
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
-                                    <span class="text-[10px] text-slate-400">දිනය: ${t.baseDate}</span>
-                                </div>
-                                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">${t.name}</h4>
-                            </div>
-                            <button onclick="deleteTopic(${t.id})" class="px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 hover:bg-red-100 text-xs font-semibold flex items-center transition-all">
-                                <i class="fa-solid fa-trash mr-1.5"></i>මකන්න
-                            </button>
-                        </div>
-                    `;
-                }).join('');
-            }
-            document.getElementById('manageModal').classList.remove('hidden');
-        };
-
-        window.closeManageModal = function() { document.getElementById('manageModal').classList.add('hidden'); };
-
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const monthsSinhala = ["ජනවාරි", "පෙබරවාරි", "මාර්තු", "අප්‍රේල්", "මැයි", "ජූනි", "ජූලි", "අගෝස්තු", "සැප්තැම්බර්", "ඔක්තෝබර්", "නොවැම්බර්", "දෙසැම්බර්"];
-            document.getElementById('currentMonthYear').innerText = `${monthsSinhala[month]} ${year}`;
-
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const totalDays = new Date(year, month + 1, 0).getDate();
-            const prevTotalDays = new Date(year, month, 0).getDate();
-            const container = document.getElementById('calendarDays');
-            container.innerHTML = '';
-            const todayStr = new Date().toISOString().split('T')[0];
-
-            for (let i = firstDayIndex - 1; i >= 0; i--) {
-                container.appendChild(createDayCell(prevTotalDays - i, true, null, []));
-            }
-
-            for (let i = 1; i <= totalDays; i++) {
-                const monthStr = String(month + 1).padStart(2, '0');
-                const dayStrNum = String(i).padStart(2, '0');
-                const dateKey = `${year}-${monthStr}-${dayStrNum}`;
-                let matchedTopics = [];
-
-                topics.forEach(t => {
-                    if(t.baseDate === dateKey) matchedTopics.push({ id: t.id, name: t.name, subject: t.subject, type: 'මුල් ඉගෙනුම', desc: t.description });
-                    if(t.reviewDates.includes(dateKey)) matchedTopics.push({ id: t.id, name: t.name, subject: t.subject, type: 'පුනරාවර්තනය', desc: t.description });
-                });
-
-                container.appendChild(createDayCell(i, false, dateKey, matchedTopics, (dateKey === todayStr)));
-            }
-        }
-
-        function createDayCell(dayNum, isInactive, dateKey, matchedTopics, isToday) {
-            const div = document.createElement('div');
-            let classes = "min-h-[95px] rounded-2xl p-2.5 border flex flex-col justify-between transition-all relative ";
-            if(isInactive) {
-                classes += "bg-slate-50/40 dark:bg-slate-800/20 border-slate-100 dark:border-slate-800/40 text-slate-300 dark:text-slate-600";
-            } else {
-                classes += "bg-white dark:bg-slate-800/70 border-slate-200/70 dark:border-slate-700/70 hover:border-indigo-500 shadow-sm cursor-pointer hover:scale-[1.02]";
-                if(isToday) classes += " ring-2 ring-indigo-500/50 bg-indigo-50/30 dark:bg-indigo-950/20";
-            }
-            div.className = classes;
-
-            let indicatorsHTML = '';
-            if(matchedTopics && matchedTopics.length > 0) {
-                indicatorsHTML += `<div class="flex items-center space-x-1 mt-1 flex-wrap gap-1">`;
-                const limit = 2;
-                for(let idx = 0; idx < Math.min(matchedTopics.length, limit); idx++) {
-                    const item = matchedTopics[idx];
-                    let dotColor = subjectConfig[item.subject]?.dot || 'bg-indigo-500';
-                    indicatorsHTML += `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200"><span class="w-1.5 h-1.5 rounded-full ${dotColor} mr-1"></span>${item.name.substring(0, 8)}...</span>`;
-                }
-                if(matchedTopics.length > limit) indicatorsHTML += `<span class="text-[9px] font-bold text-indigo-600">+${matchedTopics.length - limit}</span>`;
-                indicatorsHTML += `</div>`;
-            }
-
-            div.innerHTML = `
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold ${isToday ? 'bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}">${dayNum}</span>
-                    ${matchedTopics && matchedTopics.length > 0 ? `<span class="px-1.5 py-0.5 rounded-full bg-pink-100 dark:bg-pink-900/50 text-pink-600 dark:text-pink-300 text-[10px] font-extrabold">${matchedTopics.length}</span>` : ''}
-                </div>
-                <div>${indicatorsHTML}</div>
-            `;
-
-            if(!isInactive && dateKey) div.onclick = () => window.openDayModal(dateKey, matchedTopics);
-            return div;
-        }
-
-        window.openDayModal = function(dateKey, matchedTopics) {
-            const dateParts = dateKey.split('-');
-            document.getElementById('modalDateTitle').innerText = `${dateParts[0]} වසරේ ${dateParts[1]} මස ${dateParts[2]} වන දින`;
-            document.getElementById('modalDateSubtitle').innerText = `අදාළ දිනට නියමිත වැඩසටහන්: ${matchedTopics.length}`;
-            const container = document.getElementById('modalContentList');
-
-            if(matchedTopics.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">මෙම දින සඳහා සටහන් නොමැත.</div>`;
-            } else {
-                container.innerHTML = matchedTopics.map(item => {
-                    const subjInfo = subjectConfig[item.subject] || { name: item.subject, badge: 'bg-slate-100 text-slate-700' };
-                    const taskKey = `${item.id}_${dateKey}_${item.type}`;
-                    const isChecked = completedTasks[taskKey] ? true : false;
-                    const escapedTopics = JSON.stringify(matchedTopics).replace(/"/g, '&quot;');
-                    return `
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex flex-col space-y-2">
-                            <div class="flex items-center justify-between">
-                                <span class="px-2.5 py-1 rounded-lg text-xs font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
-                                <div class="flex items-center space-x-2">
-                                    <label class="flex items-center space-x-1.5 cursor-pointer bg-white dark:bg-slate-700 px-2 py-0.5 rounded-lg border text-[10px]">
-                                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTaskCompletion('${taskKey}'); openDayModal('${dateKey}', JSON.parse('${escapedTopics}'))" class="w-3.5 h-3.5 rounded text-indigo-600">
-                                        <span class="${isChecked ? 'line-through text-slate-400' : 'font-medium'}">අවසන් කළා</span>
-                                    </label>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${item.type === 'මුල් ඉගෙනුම' ? 'bg-indigo-100 text-indigo-700' : 'bg-pink-100 text-pink-700'}">${item.type}</span>
-                                </div>
-                            </div>
-                            <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 ${isChecked ? 'line-through opacity-60' : ''}">${item.name}</h4>
-                            ${item.desc ? `<p class="text-xs text-slate-600 dark:text-slate-300">${item.desc}</p>` : ''}
-                        </div>
-                    `;
-                }).join('');
-            }
-            document.getElementById('dayModal').classList.remove('hidden');
-        };
-
-        window.closeDayModal = function() { document.getElementById('dayModal').classList.add('hidden'); };
-        window.changeMonth = function(dir) { currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar(); };
-        window.goToCurrentMonth = function() { currentDate = new Date(); renderCalendar(); };
-
-        function renderTodayReviews() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const listContainer = document.getElementById('todayReviewsList');
-            const badge = document.getElementById('todayCountBadge');
-            let todaysItems = [];
-
-            topics.forEach(t => {
-                if(t.reviewDates.includes(todayStr) || t.baseDate === todayStr) {
-                    todaysItems.push({
-                        id: t.id,
-                        name: t.name,
-                        subject: t.subject,
-                        desc: t.description,
-                        isBase: t.baseDate === todayStr,
-                        type: t.baseDate === todayStr ? 'මුල් ඉගෙනුම' : 'පුනරාවර්තනය'
-                    });
-                }
-            });
-
-            badge.innerText = `${todaysItems.length} යි`;
-            if(todaysItems.length === 0) {
-                listContainer.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>`;
-                return;
-            }
-
-            listContainer.innerHTML = todaysItems.map(item => {
-                const subjInfo = subjectConfig[item.subject] || { name: item.subject, badge: 'bg-slate-100 text-slate-700' };
-                const taskKey = `${item.id}_${todayStr}_${item.type}`;
-                const isChecked = completedTasks[taskKey] ? true : false;
+    window.openManageModal = function() {
+        const container = document.getElementById('manageTopicsList');
+        if(topics.length === 0) {
+            container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">තවම පාඩම් එකතු කර නැත.</div>`;
+        } else {
+            container.innerHTML = topics.map(t => {
+                const subjInfo = subjectConfig[t.subject] || { name: t.subject, badge: 'bg-slate-100 text-slate-700' };
                 return `
-                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3 transition-all ${isChecked ? 'opacity-60 bg-slate-100/60 dark:bg-slate-800/40' : ''}">
-                        <div class="flex items-center space-x-3">
-                            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTaskCompletion('${taskKey}')" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
-                            <div>
-                                <div class="flex items-center space-x-2 mb-0.5">
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
-                                    <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-100 ${isChecked ? 'line-through' : ''}">${item.name}</h4>
-                                </div>
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
+                                <span class="text-[10px] text-slate-400">දිනය: ${t.baseDate}</span>
                             </div>
+                            <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">${t.name}</h4>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold shrink-0 ${item.isBase ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-300'}">
-                                ${item.isBase ? 'අලුත් පාඩම' : 'පුනරාවර්තනය'}
-                            </span>
-                            <button onclick="deleteTopic(${item.id})" title="මෙම පාඩම මකන්න" class="p-1.5 text-slate-400 hover:text-red-500 transition-all">
-                                <i class="fa-solid fa-trash text-xs"></i>
-                            </button>
-                        </div>
+                        <button onclick="deleteTopic(${t.id})" class="px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 hover:bg-red-100 text-xs font-semibold flex items-center transition-all">
+                            <i class="fa-solid fa-trash mr-1.5"></i>මකන්න
+                        </button>
                     </div>
                 `;
             }).join('');
         }
-    </script>
+        document.getElementById('manageModal').classList.remove('hidden');
+    };
+
+    window.closeManageModal = function() { document.getElementById('manageModal').classList.add('hidden'); };
+
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const monthsSinhala = ["ජනවාරි", "පෙබරවාරි", "මාර්තු", "අප්‍රේල්", "මැයි", "ජූනි", "ජූලි", "අගෝස්තු", "සැප්තැම්බර්", "ඔක්තෝබර්", "නොවැම්බර්", "දෙසැම්බර්"];
+        document.getElementById('currentMonthYear').innerText = `${monthsSinhala[month]} ${year}`;
+
+        const firstDayIndex = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
+        const prevTotalDays = new Date(year, month, 0).getDate();
+        const container = document.getElementById('calendarDays');
+        container.innerHTML = '';
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        for (let i = firstDayIndex - 1; i >= 0; i--) {
+            container.appendChild(createDayCell(prevTotalDays - i, true, null, []));
+        }
+
+        for (let i = 1; i <= totalDays; i++) {
+            const monthStr = String(month + 1).padStart(2, '0');
+            const dayStrNum = String(i).padStart(2, '0');
+            const dateKey = `${year}-${monthStr}-${dayStrNum}`;
+            let matchedTopics = [];
+
+            topics.forEach(t => {
+                if(t.baseDate === dateKey) matchedTopics.push({ id: t.id, name: t.name, subject: t.subject, type: 'මුල් ඉගෙනුම', desc: t.description });
+                if(t.reviewDates.includes(dateKey)) matchedTopics.push({ id: t.id, name: t.name, subject: t.subject, type: 'පුනරාවර්තනය', desc: t.description });
+            });
+
+            container.appendChild(createDayCell(i, false, dateKey, matchedTopics, (dateKey === todayStr)));
+        }
+    }
+
+    function createDayCell(dayNum, isInactive, dateKey, matchedTopics, isToday) {
+        const div = document.createElement('div');
+        let classes = "min-h-[95px] rounded-2xl p-2.5 border flex flex-col justify-between transition-all relative ";
+        if(isInactive) {
+            classes += "bg-slate-50/40 dark:bg-slate-800/20 border-slate-100 dark:border-slate-800/40 text-slate-300 dark:text-slate-600";
+        } else {
+            classes += "bg-white dark:bg-slate-800/70 border-slate-200/70 dark:border-slate-700/70 hover:border-indigo-500 shadow-sm cursor-pointer hover:scale-[1.02]";
+            if(isToday) classes += " ring-2 ring-indigo-500/50 bg-indigo-50/30 dark:bg-indigo-950/20";
+        }
+        div.className = classes;
+
+        let indicatorsHTML = '';
+        if(matchedTopics && matchedTopics.length > 0) {
+            indicatorsHTML += `<div class="flex items-center space-x-1 mt-1 flex-wrap gap-1">`;
+            const limit = 2;
+            for(let idx = 0; idx < Math.min(matchedTopics.length, limit); idx++) {
+                const item = matchedTopics[idx];
+                let dotColor = subjectConfig[item.subject]?.dot || 'bg-indigo-500';
+                indicatorsHTML += `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200"><span class="w-1.5 h-1.5 rounded-full ${dotColor} mr-1"></span>${item.name.substring(0, 8)}...</span>`;
+            }
+            if(matchedTopics.length > limit) indicatorsHTML += `<span class="text-[9px] font-bold text-indigo-600">+${matchedTopics.length - limit}</span>`;
+            indicatorsHTML += `</div>`;
+        }
+
+        div.innerHTML = `
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold ${isToday ? 'bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}">${dayNum}</span>
+                ${matchedTopics && matchedTopics.length > 0 ? `<span class="px-1.5 py-0.5 rounded-full bg-pink-100 dark:bg-pink-900/50 text-pink-600 dark:text-pink-300 text-[10px] font-extrabold">${matchedTopics.length}</span>` : ''}
+            </div>
+            <div>${indicatorsHTML}</div>
+        `;
+
+        if(!isInactive && dateKey) div.onclick = () => window.openDayModal(dateKey, matchedTopics);
+        return div;
+    }
+
+    window.openDayModal = function(dateKey, matchedTopics) {
+        const dateParts = dateKey.split('-');
+        document.getElementById('modalDateTitle').innerText = `${dateParts[0]} වසරේ ${dateParts[1]} මස ${dateParts[2]} වන දින`;
+        document.getElementById('modalDateSubtitle').innerText = `අදාළ දිනට නියමිත වැඩසටහන්: ${matchedTopics.length}`;
+        const container = document.getElementById('modalContentList');
+
+        if(matchedTopics.length === 0) {
+            container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">මෙම දින සඳහා සටහන් නොමැත.</div>`;
+        } else {
+            container.innerHTML = matchedTopics.map(item => {
+                const subjInfo = subjectConfig[item.subject] || { name: item.subject, badge: 'bg-slate-100 text-slate-700' };
+                const taskKey = `${item.id}_${dateKey}_${item.type}`;
+                const isChecked = completedTasks[taskKey] ? true : false;
+                const escapedTopics = JSON.stringify(matchedTopics).replace(/"/g, '&quot;');
+                return `
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex flex-col space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
+                            <div class="flex items-center space-x-2">
+                                <label class="flex items-center space-x-1.5 cursor-pointer bg-white dark:bg-slate-700 px-2 py-0.5 rounded-lg border text-[10px]">
+                                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTaskCompletion('${taskKey}'); openDayModal('${dateKey}', JSON.parse('${escapedTopics}'))" class="w-3.5 h-3.5 rounded text-indigo-600">
+                                    <span class="${isChecked ? 'line-through text-slate-400' : 'font-medium'}">අවසන් කළා</span>
+                                </label>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${item.type === 'මුල් ඉගෙනුම' ? 'bg-indigo-100 text-indigo-700' : 'bg-pink-100 text-pink-700'}">${item.type}</span>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 ${isChecked ? 'line-through opacity-60' : ''}">${item.name}</h4>
+                        ${item.desc ? `<p class="text-xs text-slate-600 dark:text-slate-300">${item.desc}</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        document.getElementById('dayModal').classList.remove('hidden');
+    };
+
+    window.closeDayModal = function() { document.getElementById('dayModal').classList.add('hidden'); };
+    window.changeMonth = function(dir) { currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar(); };
+    window.goToCurrentMonth = function() { currentDate = new Date(); renderCalendar(); };
+
+    function renderTodayReviews() {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const listContainer = document.getElementById('todayReviewsList');
+        const badge = document.getElementById('todayCountBadge');
+        let todaysItems = [];
+
+        topics.forEach(t => {
+            if(t.reviewDates.includes(todayStr) || t.baseDate === todayStr) {
+                todaysItems.push({
+                    id: t.id,
+                    name: t.name,
+                    subject: t.subject,
+                    desc: t.description,
+                    isBase: t.baseDate === todayStr,
+                    type: t.baseDate === todayStr ? 'මුල් ඉගෙනුම' : 'පුනරාවර්තනය'
+                });
+            }
+        });
+
+        badge.innerText = `${todaysItems.length} යි`;
+        if(todaysItems.length === 0) {
+            listContainer.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>`;
+            return;
+        }
+
+        listContainer.innerHTML = todaysItems.map(item => {
+            const subjInfo = subjectConfig[item.subject] || { name: item.subject, badge: 'bg-slate-100 text-slate-700' };
+            const taskKey = `${item.id}_${todayStr}_${item.type}`;
+            const isChecked = completedTasks[taskKey] ? true : false;
+            return `
+                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3 transition-all ${isChecked ? 'opacity-60 bg-slate-100/60 dark:bg-slate-800/40' : ''}">
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTaskCompletion('${taskKey}')" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-0.5">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
+                                <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-100 ${isChecked ? 'line-through' : ''}">${item.name}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-semibold shrink-0 ${item.isBase ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-300'}">
+                            ${item.isBase ? 'අලුත් පාඩම' : 'පුනරාවර්තනය'}
+                        </span>
+                        <button onclick="deleteTopic(${item.id})" title="මෙම පාඩම මකන්න" class="p-1.5 text-slate-400 hover:text-red-500 transition-all">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+</script>
+
 </body>
 </html>
