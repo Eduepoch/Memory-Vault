@@ -92,11 +92,11 @@
                 <!-- Mini Stats Counters -->
                 <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
                     <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
-                        <span class="block text-xs text-slate-400 font-medium">මුළු වැඩ</span>
+                        <span class="block text-xs text-slate-400 font-medium">මුළු මාතෘකා ගණන</span>
                         <span id="statTotalTopics" class="text-lg font-black text-indigo-600 dark:text-indigo-400">0</span>
                     </div>
                     <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
-                        <span class="block text-xs text-slate-400 font-medium">අද වැඩ</span>
+                        <span class="block text-xs text-slate-400 font-medium">අද පුනරාවර්තන මාතෘකා</span>
                         <span id="statTodayCount" class="text-lg font-black text-pink-600 dark:text-pink-400">0</span>
                     </div>
                     <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
@@ -106,7 +106,6 @@
                 </div>
             </div>
 
-            <!-- Creative Subject-Wise Breakdown Cards -->
             <div class="mt-6 pt-6 border-t border-slate-200/60 dark:border-slate-700/60 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <!-- Physics Card -->
                 <div class="p-3.5 rounded-2xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/80 dark:border-blue-900/50 flex items-center justify-between shadow-sm">
@@ -116,7 +115,7 @@
                         </div>
                         <div>
                             <span class="block text-[10px] uppercase font-bold text-blue-600 dark:text-blue-400 tracking-wider">Physics</span>
-                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statPhysicsCount" class="text-blue-700 dark:text-blue-300 font-extrabold">0</strong></span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">මාතෘකා: <strong id="statPhysicsCount" class="text-blue-700 dark:text-blue-300 font-extrabold">0</strong></span>
                         </div>
                     </div>
                 </div>
@@ -129,7 +128,7 @@
                         </div>
                         <div>
                             <span class="block text-[10px] uppercase font-bold text-purple-600 dark:text-purple-400 tracking-wider">Chemistry</span>
-                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statChemistryCount" class="text-purple-700 dark:text-purple-300 font-extrabold">0</strong></span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">මාතෘකා: <strong id="statChemistryCount" class="text-purple-700 dark:text-purple-300 font-extrabold">0</strong></span>
                         </div>
                     </div>
                 </div>
@@ -142,7 +141,7 @@
                         </div>
                         <div>
                             <span class="block text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">Biology</span>
-                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statBiologyCount" class="text-emerald-700 dark:text-emerald-300 font-extrabold">0</strong></span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">මාතෘකා: <strong id="statBiologyCount" class="text-emerald-700 dark:text-emerald-300 font-extrabold">0</strong></span>
                         </div>
                     </div>
                 </div>
@@ -155,7 +154,7 @@
                         </div>
                         <div>
                             <span class="block text-[10px] uppercase font-bold text-amber-600 dark:text-amber-400 tracking-wider">Comb. Maths</span>
-                            <span class="text-xs text-slate-500 dark:text-slate-400">පාඩම්: <strong id="statMathsCount" class="text-amber-700 dark:text-amber-300 font-extrabold">0</strong></span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">මාතෘකා: <strong id="statMathsCount" class="text-amber-700 dark:text-amber-300 font-extrabold">0</strong></span>
                         </div>
                     </div>
                 </div>
@@ -173,25 +172,43 @@
                 <form id="topicForm" onsubmit="addTopic(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විෂය (Subject)</label>
-                        <select id="topicSubject" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
+                        <select id="topicSubject" required onchange="handleSubjectChange()" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
                             <option value="physics">Physics (භෞතික විද්‍යාව)</option>
                             <option value="chemistry">Chemistry (රසායන විද්‍යාව)</option>
                             <option value="biology">Biology (ජීව විද්‍යාව)</option>
                             <option value="maths">Combined Mathematics (සංයුක්ත ගණිතය)</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">මාතෘකාව හෝ පාඩම</label>
-                        <input type="text" id="topicName" required placeholder="උදා: ත්‍රිකෝණමිතිය (Trigonometry)" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+
+                    <!-- Separated Lesson Section (පාඩම) -->
+                    <div id="lessonSelectContainer">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">පාඩම (Lesson)</label>
+                        <select id="topicLessonSelect" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
+                            <!-- Populated dynamically based on subject -->
+                        </select>
                     </div>
+
+                    <div id="lessonInputContainer" class="hidden">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">පාඩම (Lesson)</label>
+                        <input type="text" id="topicLessonInput" placeholder="පාඩමේ නම ටයිප් කරන්න" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+
+                    <!-- Separated Subtopic Section (මාතෘකාව) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">මාතෘකාව (Topic)</label>
+                        <input type="text" id="topicSubtopic" required placeholder="උදා: ස්පන්දනය හා තරංග චලිතය / ත්‍රිකෝණමිතිය" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ඉගෙනගත් දිනය</label>
                         <input type="date" id="topicDate" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
                     </div>
+
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විස්තරයක් (අවශ්‍ය නම්)</label>
                         <textarea id="topicDesc" rows="2" placeholder="මතක තබාගත යුතු විශේෂ කරුණු..." class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
                     </div>
+
                     <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all text-sm flex items-center justify-center">
                         <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>මතක වක්‍රය සකස් කරන්න
                     </button>
@@ -268,7 +285,7 @@
             
             <div class="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed mb-6 text-sm sm:text-base">
                 <p>
-                    අපි යම් අලුත් තොරතුරක්, සූත්‍රයක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම විද්‍යාත්මක සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් (Review) නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවలින් 70%ක් පමණ අමතක කර දමන බවයි!
+                    අපි යම් අලුත් තොරතුරක්, සූත්‍රයක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම විද්‍යාත්මක සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් (Review) නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවලින් 70%ක් පමණ අමතක කර දමන බවයි!
                 </p>
                 <p>
                     මෙම ගැටළුව මඟහරවා ගැනීමට භාවිත කරන ක්‍රමවේදය <b>Spaced Repetition (දුරස්ථ පුනරාවර්තනය)</b> වේ. මෙහිදී තොරතුරු සම්පූර්ණයෙන්ම අමතක වී යාමට ප්‍රථම, නිශ්චිත කාල පරතරයන් යටතේ (උදාහරණ ලෙස: දින 1, 3, 6, 12, 20, 30, 60 සහ 90 ලෙස) නැවත මතක් කරගනු ලැබේ. එවිට මොළය සිතන්නේ මෙය ඉතා වැදගත් තොරතුරක් බවත්, එය කාලීනව අවශ්‍ය වන බවත්ය. ප්‍රතිඵලයක් ලෙස මතකය තාවකාලික මතකයේ සිට දිගුකාලීන මතකය (Long-term Memory) වෙත ස්ථිරවම තැන්පත් වේ.
@@ -304,24 +321,22 @@
                 </div>
             </div>
 
-            <!-- How to Use Section Updated -->
+            <!-- How to Use Section -->
             <div class="space-y-6">
                 <div class="bg-indigo-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-indigo-100 dark:border-slate-700 shadow-sm">
                     <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center text-lg"><i class="fa-solid fa-circle-check mr-2"></i>Memory Vault භාවිත කරන ආකාරය</h3>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Card 1 -->
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
                             <div>
                                 <div class="flex items-center space-x-2.5 mb-2">
                                     <span class="bg-gradient-to-tr from-indigo-600 to-purple-600 text-white w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black shadow-md">1</span>
                                     <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">අලුත් දැනුම අස්වැන්නක් එකතු කිරීම</h4>
                                 </div>
-                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">පාසලේදී හෝ පන්තියේදී ඉගෙනගත් අලුත්ම පාඩම 'අද ඉගෙනගත් දෙය එක් කරන්න' පෝරමය හරහා විෂයත් සමඟ පද්ධතියට ඇතුළත් කරන්න.</p>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">පාසලේදී හෝ පන්තියේදී ඉගෙනගත් අලුත්ම පාඩම හා මාතෘකාව 'අද ඉගෙනගත් දෙය එක් කරන්න' පෝරමය හරහා විෂයත් සමඟ පද්ධතියට ඇතුළත් කරන්න.</p>
                             </div>
                         </div>
 
-                        <!-- Card 2 -->
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
                             <div>
                                 <div class="flex items-center space-x-2.5 mb-2">
@@ -332,7 +347,6 @@
                             </div>
                         </div>
 
-                        <!-- Card 3 -->
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
                             <div>
                                 <div class="flex items-center space-x-2.5 mb-2">
@@ -343,7 +357,6 @@
                             </div>
                         </div>
 
-                        <!-- Card 4 -->
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:scale-[1.01] transition-all">
                             <div>
                                 <div class="flex items-center space-x-2.5 mb-2">
@@ -483,17 +496,139 @@
         maths: { name: 'Comb. Maths', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800', dot: 'bg-amber-500' }
     };
 
+    const subjectLessons = {
+        physics: [
+            "මිනුම",
+            "යාන්ත්‍ර විද්‍යාව",
+            "දෝලන සහ තරංග",
+            "තාපය",
+            "ගුරුත්වාකර්ෂණ ක්ෂේත්‍ර",
+            "විද්‍යුත් ක්ෂේත්‍ර",
+            "චුම්බක ක්ෂේත්‍ර",
+            "ධාරා විද්‍යුතය",
+            "ඉලෙක්ට්‍රොනික විද්‍යාව",
+            "පදාර්ථයේ යාන්ත්‍රික ගුණ",
+            "පදාර්ථ හා විකිරණ"
+        ],
+        chemistry: [
+            "පරමාණුක ව්‍යුහය",
+            "ව්‍යුහය හා බන්ධන",
+            "රසායනික ගණනය",
+            "පදාර්ථයේ වායු අවස්ථාව",
+            "ශක්ති විද්‍යාව",
+            "අකාබනික රසායනය",
+            "කාබනික රසායනය",
+            "චාලක රසායනය",
+            "සමතුලිතතාව",
+            "විද්‍යුත් රසායනය",
+            "කර්මාන්ත රසායනය සහ පරිසර දූෂණය"
+        ],
+        biology: [
+            "ජීව විද්‍යාව හඳුන්වා දීම",
+            "ජීවයේ රසායනික හා සෛලීය පදනම",
+            "පරිණාමය හා ජීවීන්ගේ විවිධත්වය",
+            "ශාක ආකාරය හා ක්‍රියාකාරිත්වය",
+            "සත්ත්ව ආකාරය හා ක්‍රියාකාරිත්වය",
+            "ප්‍රවේණිය",
+            "අණුක ජීව විද්‍යාව හා ප්‍රතිසංයෝජිත DNA තාක්ෂණය",
+            "පාරිසරික ජීව විද්‍යාව",
+            "ක්ෂුද්‍ර ජීව විද්‍යාව",
+            "ව්‍යවහාරික ජීව විද්‍යාව"
+        ],
+        maths: {
+            pure: [
+                "තාත්වික සංඛ්‍යා",
+                "ශ්‍රිත",
+                "කෝණ මිනුම්",
+                "සෘජුකෝණාස්‍ර කාටිසීය පද්ධතිය",
+                "වෘත්ත ශ්‍රිත",
+                "සයින් නීතිය, කෝසයින් නීතිය",
+                "බහුපද",
+                "ත්‍රිකෝණමිතික සර්වසාම්‍ය",
+                "පරිමේය ශ්‍රිත",
+                "දර්ශක හා ලඝුගණක නියම",
+                "අසමානතා පිලිබඳ මූලික ප්‍රතිඵල සහ අසමානතාවල විසඳුම්",
+                "ත්‍රිකෝණමිතිය",
+                "වර්ගජ ශ්‍රිත සහ වර්ගජ සමීකරණ",
+                "ප්‍රතිලෝම ත්‍රිකෝණමිතික ශ්‍රිත",
+                "සයින් නීතිය, කෝසයින් නීතිය සීමා",
+                "ව්‍යුත්පන්න",
+                "ව්‍යුත්පන්නවල භාවිත",
+                "සරල රේඛාව",
+                "අනුකලනය",
+                "වෘත්තය",
+                "සංකරණ හා සංයෝජන",
+                "ගණිත අභියුහන මූලධර්මය",
+                "ශ්‍රේණි",
+                "ද්විපද ප්‍රසාරණය",
+                "සංකීර්ණ සංඛ්‍යා",
+                "න්‍යාස"
+            ],
+            applied: [
+                "දෛශික",
+                "ඒකතල බල පද්ධති",
+                "සරල රේඛීය චලිතය",
+                "ප්‍රක්ෂිප්ත",
+                "සමතුලිතතාව",
+                "ඝර්ෂණය",
+                "සාපේක්ෂ චලිතය",
+                "නිව්ටන් නියම",
+                "සන්ධි කළ දඬු",
+                "රාමුසැකිලි",
+                "ආවේගය හා ගැටුම්",
+                "කාර්‍ය, ශක්තිය, ක්ෂමතාව",
+                "වෘත්ත චලිතය",
+                "සම්භාවිතාව",
+                "සරල අනුවර්තී චලිතය",
+                "ස්කන්ධ කේන්ද්‍රය",
+                "සංඛ්‍යානය"
+            ]
+        }
+    };
+
     let topics = [];
     let completedTasks = {};
     let currentDate = new Date();
 
     document.getElementById('topicDate').valueAsDate = new Date();
 
+    window.handleSubjectChange = function() {
+        const subj = document.getElementById('topicSubject').value;
+        const selectContainer = document.getElementById('lessonSelectContainer');
+        const inputContainer = document.getElementById('lessonInputContainer');
+        const selectElem = document.getElementById('topicLessonSelect');
+        const inputElem = document.getElementById('topicLessonInput');
+
+        selectContainer.classList.remove('hidden');
+        inputContainer.classList.add('hidden');
+        inputElem.removeAttribute('required');
+        selectElem.setAttribute('required', 'required');
+
+        if (subj === 'maths') {
+            const pureOpts = subjectLessons.maths.pure.map(l => `<option value="(ශුද්ධ ගණිතය) ${l}">${l}</option>`).join('');
+            const appliedOpts = subjectLessons.maths.applied.map(l => `<option value="(ව්‍යවහාරික ගණිතය) ${l}">${l}</option>`).join('');
+            selectElem.innerHTML = `
+                <optgroup label="--- ශුද්ධ ගණිතය ---">
+                    ${pureOpts}
+                </optgroup>
+                <optgroup label="--- ව්‍යවහාරික ගණිතය ---">
+                    ${appliedOpts}
+                </optgroup>
+            `;
+        } else {
+            const lessons = subjectLessons[subj] || [];
+            selectElem.innerHTML = lessons.map(l => `<option value="${l}">${l}</option>`).join('');
+        }
+    };
+
     window.addEventListener('DOMContentLoaded', async () => {
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
             document.getElementById('themeIcon').className = "fa-solid fa-sun";
         }
+
+        // Initialize subject dropdown/input selector
+        handleSubjectChange();
 
         topics = JSON.parse(localStorage.getItem('forgetting_topics')) || [];
         completedTasks = JSON.parse(localStorage.getItem('forgetting_completed_tasks')) || {};
@@ -714,11 +849,17 @@
     window.addTopic = function(e) {
         e.preventDefault();
         const subject = document.getElementById('topicSubject').value;
-        const name = document.getElementById('topicName').value;
+        let lesson = document.getElementById('topicLessonSelect').value.trim();
+        if (!lesson && subject === 'maths') {
+            lesson = document.getElementById('topicLessonInput').value.trim();
+        }
+        const subtopic = document.getElementById('topicSubtopic').value.trim();
         const dateStr = document.getElementById('topicDate').value;
         const desc = document.getElementById('topicDesc').value;
 
-        if(!name || !dateStr || !subject) return;
+        if(!lesson || !subtopic || !dateStr || !subject) return;
+
+        const fullName = `${lesson} - ${subtopic}`;
 
         const baseDate = new Date(dateStr);
         const intervals = [1, 3, 6, 12, 20, 30, 60, 90];
@@ -731,7 +872,9 @@
         const newTopic = {
             id: Date.now(),
             subject: subject,
-            name: name,
+            lesson: lesson,
+            subtopic: subtopic,
+            name: fullName,
             baseDate: dateStr,
             description: desc,
             reviewDates: reviewDates
@@ -741,6 +884,7 @@
         saveAndRender();
         document.getElementById('topicForm').reset();
         document.getElementById('topicDate').valueAsDate = new Date();
+        handleSubjectChange(); // Reset input view
         showMessage('සාර්ථකයි!', 'නව පාඩම සහ මතක වක්‍ර කාල පරතරයන් සාර්ථකව එකතු කරන ලදී!');
     };
 
