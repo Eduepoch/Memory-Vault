@@ -198,7 +198,7 @@
             </div>
         </div>
 
-        <!-- GUIDE VIEW (COMPREHENSIVE & EXPANDED) -->
+        <!-- GUIDE VIEW -->
         <div id="view-guide" class="hidden space-y-8 max-w-4xl mx-auto">
             <div class="glass-card rounded-3xl p-8 border border-slate-200/60 dark:border-slate-700/60 shadow-xl relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -209,10 +209,10 @@
                     මොකක්ද මේ Ebbinghaus Forgetting Curve සහ Spaced Repetition කියන්නේ?
                 </h2>
                 <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6 text-sm sm:text-base">
-                    අපි යම් අලුත් තොරතුරක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවලින් 70%ක් පමණ අමතක කර දමන බවයි!
+                    අපි යම් අලුත් තොරතුරක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවలින් 70%ක් පමණ අමතක කර දමන බවයි!
                 </p>
 
-                <!-- Scientific SVG Visual Graphic of Forgetting Curve with Proper Exponential Decay & Spaced Repetition Steps -->
+                <!-- Scientific SVG Visual Graphic -->
                 <div class="my-8 p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden text-white">
                     <div class="flex items-center justify-between mb-4">
                         <h4 class="font-bold text-sm text-indigo-400 flex items-center"><i class="fa-solid fa-chart-line mr-2"></i>විද්‍යාත්මක Ebbinghaus අමතක වීමේ වක්‍රය සහ Spaced Repetition ප්‍රස්ථාරය</h4>
@@ -220,7 +220,6 @@
                     </div>
                     <div class="relative w-full h-60 sm:h-72 flex items-end">
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 600 260" preserveAspectRatio="none">
-                            <!-- Horizontal grid lines (0%, 25%, 50%, 75%, 100%) -->
                             <line x1="0" y1="10" x2="600" y2="10" stroke="#334155" stroke-dasharray="4" />
                             <line x1="0" y1="70" x2="600" y2="70" stroke="#334155" stroke-dasharray="4" />
                             <line x1="0" y1="130" x2="600" y2="130" stroke="#334155" stroke-dasharray="4" />
@@ -228,59 +227,26 @@
                             <line x1="0" y1="250" x2="600" y2="250" stroke="#64748b" stroke-width="2" />
                             <line x1="0" y1="10" x2="0" y2="250" stroke="#64748b" stroke-width="2" />
 
-                            <!-- Axis labels -->
                             <text x="10" y="25" fill="#94a3b8" font-size="10">100%</text>
                             <text x="10" y="85" fill="#94a3b8" font-size="10">75%</text>
                             <text x="10" y="145" fill="#94a3b8" font-size="10">50%</text>
                             <text x="10" y="205" fill="#94a3b8" font-size="10">25%</text>
 
-                            <!-- Natural Forgetting Curve (Steep exponential drop from 100% to near 20% in day 1, then flattening) -->
-                            <!-- Formula representation curve: starts at (0, 10), drops sharply to (100, 180) [Day 1], then tapers off to (600, 230) -->
                             <path d="M 0,10 C 25,140 60,180 120,195 C 250,210 400,225 600,232" fill="none" stroke="#f43f5e" stroke-width="3.5" stroke-dasharray="6" />
-
-                            <!-- Spaced Repetition Lifted Curve (Steps up at intervals: Day 1, Day 3, Day 6, Day 12, Day 30) -->
                             <path d="M 0,10 C 25,140 50,185 60,190 L 60,20 C 120,130 180,175 190,180 L 190,30 C 270,110 350,150 360,155 L 360,40 C 460,90 560,110 600,60" fill="none" stroke="#6366f1" stroke-width="4" />
                         </svg>
 
-                        <!-- Absolute positioned annotations on SVG -->
                         <div class="absolute top-2 left-16 text-[10px] text-indigo-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-indigo-500/30">Spaced Repetition මගින් මතකය ඉහළ නැංවීම</div>
-                        <div class="absolute bottom-4 right-4 text-[10px] text-pink-400 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-pink-500/30">--- සාමාන්‍ය අමතක වීමේ වක්‍රය (පුනරාවර්තන නොමැතිව)</div>
-                    </div>
-                    <div class="grid grid-cols-5 gap-2 mt-4 pt-4 border-t border-slate-800 text-center text-[11px] text-slate-400 font-medium">
-                        <div>දින 0<br><span class="text-[10px] text-slate-500">මුල් ඉගෙනුම</span></div>
-                        <div>දින 1<br><span class="text-[10px] text-indigo-400">1 වන පුනරාවර්තනය</span></div>
-                        <div>දින 3 - 6<br><span class="text-[10px] text-indigo-400">2 සහ 3 වාර</span></div>
-                        <div>දින 12 - 30<br><span class="text-[10px] text-indigo-400">දිගුකාලීන මතකය</span></div>
-                        <div>දින 60 - 90<br><span class="text-[10px] text-emerald-400">ස්ථිර මතක තැන්බතුව</span></div>
+                        <div class="absolute bottom-4 right-4 text-[10px] text-pink-400 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-pink-500/30">--- සාමාන්‍ය අමතක වීමේ වක්‍රය</div>
                     </div>
                 </div>
 
                 <div class="space-y-6">
                     <div class="bg-indigo-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-indigo-100 dark:border-slate-700 shadow-sm">
-                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-3 flex items-center text-lg"><i class="fa-solid fa-lightbulb mr-2"></i>Spaced Repetition (පරතර සහිත පුනරාවර්තනය) ක්‍රියාත්මක වන්නේ කෙසේද?</h3>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-3 flex items-center text-lg"><i class="fa-solid fa-lightbulb mr-2"></i>Spaced Repetition ක්‍රියාත්මක වන්නේ කෙසේද?</h3>
                         <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-                            මොළය ස්වභාවයෙන්ම තොරතුරු අමතක කිරීමට උත්සාහ කරන විට, හරියටම එම අමතක වීමට ඔන්න මෙන්න තියෙන අවස්ථාවේදී (At the verge of forgetting) නැවත එම පාඩම මතක් කරගැනීම මඟින් මොළයට ප්‍රබල සංඥාවක් ලැබෙයි <i>"මෙම තොරතුර ඉතා වැදගත්ය, එය මැකී යාමට ඉඩ නොදිය යුතුය"</i> කියා. මෙයින් මතකය දිගුකාලීන මතක තැන්බතුවට (Long-Term Memory) ස්ථිරවම ගමන් කරයි.
+                            මොළය ස්වභාවයෙන්ම තොරතුරු අමතක කිරීමට උත්සාහ කරන විට, හරියටම එම අමතක වීමට ඔන්න මෙන්න තියෙන අවස්ථාවේදී නැවත එම පාඩම මතක් කරගැනීම මඟින් මතකය දිගුකාලීන මතක තැන්බතුවට (Long-Term Memory) ස්ථිරවම ගමන් කරයි.
                         </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="bg-white dark:bg-slate-700/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-600">
-                                <h4 class="font-bold text-xs text-indigo-600 dark:text-indigo-300 mb-1">🎯 1. සක්‍රීය සිහිපත් කිරීම (Active Recall)</h4>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-300">නිකම්ම පොත කියවනවා වෙනුවට, තොරතුරු මොළයෙන් ඉවතට ඇදලා මතක් කරගැනීම.</p>
-                            </div>
-                            <div class="bg-white dark:bg-slate-700/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-600">
-                                <h4 class="font-bold text-xs text-pink-600 dark:text-pink-300 mb-1">⏳ 2. ක්‍රමානුකූල කාල පරතර (Spaced Intervals)</h4>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-300">දින 1, 3, 6, 12, 20, 30, 60 සහ 90 වැනි නිශ්චිත පරතර හරහා පුනරාවර්තනය කිරීම.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-pink-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-pink-100 dark:border-slate-700 shadow-sm">
-                        <h3 class="font-bold text-pink-600 dark:text-pink-400 mb-3 flex items-center text-lg"><i class="fa-solid fa-shield-halved mr-2"></i>A/L හෝ ඕනෑම විභාගයකදී ඉහළ ලකුණු ලබා ගැනීමට මෙම යෙදුම භාවිතා කරන්නේ කෙසේද?</h3>
-                        <ol class="list-decimal list-inside space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                            <li><b>අද ඉගෙනගත් දෙය එක් කරන්න:</b> පාසලේදී හෝ පන්තියේදී උගත් භෞතික විද්‍යාව, රසායන විද්‍යාව, ජීව විද්‍යාව හෝ ගණිත පාඩම අද දිනට අදාළව ඇතුළත් කරන්න.</li>
-                            <li><b>ස්වයංක්‍රීය කාලසටහන:</b> අපගේ යෙදුම මඟින් ස්වයංක්‍රීයව දින 1, 3, 6, 12, 20, 30, 60 සහ 90 යන මතක වක්‍ර පරතර ගණනය කර කැලැන්ඩරයේ සලකුණු කරයි.</li>
-                            <li><b>දෛනික පිරික්සුම් ලැයිස්තුව (Checklist):</b> සෑම දිනකම උදෑසන යෙදුමට පිවිස අද දිනට නියමිත පුනරාවර්තන මොනවාදැයි බලා ඒවා අවසන් කළ පසු ✓ ලකුණු කරන්න.</li>
-                            <li><b>විභාග ජයග්‍රහණය:</b> මෙම ක්‍රමය නිවැරදිව අනුගමනය කිරීමෙන් ඔබට විභාග ශාලාවට යන තුරුත් පාඩම් අමතක වීමකින් තොරව මනාව මතක තබාගත හැක.</li>
-                        </ol>
                     </div>
                 </div>
             </div>
@@ -303,7 +269,7 @@
         </div>
     </div>
 
-    <!-- Manage Topics Modal (Individual Delete Feature) -->
+    <!-- Manage Topics Modal -->
     <div id="manageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
         <div class="glass-card rounded-3xl max-w-xl w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
@@ -333,23 +299,24 @@
         </div>
     </div>
 
+    <!-- FIREBASE INTEGRATED SCRIPT -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyD3I1nZ9tgTeqNUFJiapphjjHaILBq-XtQ",
-            authDomain: "memory-vault-39654.firebaseapp.com",
-            projectId: "memory-vault-39654",
-            storageBucket: "memory-vault-39654.firebasestorage.app",
-            messagingSenderId: "927845351656",
-            appId: "1:927845351656:web:2a70490ab6976df9b4495d",
-            measurementId: "G-XR26F7LBF5"
+            apiKey: "AIzaSyD3FvcTv_yi7vyIsZSJ6q7tDIhte1sb6jo",
+            authDomain: "memory-vault-mine.firebaseapp.com",
+            projectId: "memory-vault-mine",
+            storageBucket: "memory-vault-mine.firebasestorage.app",
+            messagingSenderId: "636868190426",
+            appId: "1:636868190426:web:b14f5ea2ee98fcf952c5e3",
+            measurementId: "G-WHNJ51EB52"
         };
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'memory-vault-39654';
+        const appId = 'memory-vault-mine';
 
         const app = initializeApp(firebaseConfig);
         let db = null;
@@ -381,7 +348,6 @@
         document.getElementById('topicDate').valueAsDate = new Date();
 
         window.addEventListener('DOMContentLoaded', async () => {
-            // Dark mode init
             if (localStorage.getItem('theme') === 'dark') {
                 document.documentElement.classList.add('dark');
                 document.getElementById('themeIcon').className = "fa-solid fa-sun";
@@ -395,11 +361,7 @@
 
             if (!auth) return;
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
             } catch (e) {
                 console.warn("Auth notice:", e);
             }
