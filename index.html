@@ -27,60 +27,43 @@
     </script>
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
         .dark .glass-card { background: rgba(30, 41, 59, 0.95); }
-        .device-frame-mobile {
-            max-width: 420px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            border: 8px solid #334155;
-            border-radius: 36px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-            background: #f8fafc;
-        }
-        .dark .device-frame-mobile {
-            border-color: #1e293b;
-        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900 min-h-full text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
-    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 shadow-sm">
         <div id="mainHeaderContainer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between transition-all">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 animate-pulse">
                     <i class="fa-solid fa-brain text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">Memory Vault</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Forgetting Curve & Spaced Repetition</p>
+                    <h1 class="font-extrabold text-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Memory Vault</h1>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Smart Ebbinghaus Spaced Repetition</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-3">
-                <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-slate-200 dark:border-slate-700">
-                    <button onclick="setDeviceMode('laptop')" id="mode-laptop" title="Laptop View" class="px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all bg-indigo-600 text-white shadow-sm">
-                        <i class="fa-solid fa-laptop"></i>
-                    </button>
-                    <button onclick="setDeviceMode('mobile')" id="mode-mobile" title="Phone View" class="px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
-                        <i class="fa-solid fa-mobile-screen"></i>
-                    </button>
-                </div>
+                <!-- Theme Toggle -->
+                <button onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:scale-105 transition-all text-sm shadow-sm">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
 
                 <div id="authContainer">
-                    <button onclick="handleGoogleSignIn()" id="authBtn" class="flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                    <button onclick="handleGoogleSignIn()" id="authBtn" class="flex items-center space-x-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
                         <i class="fa-brands fa-google text-indigo-600"></i>
                         <span id="authBtnText">Sign In</span>
                     </button>
                 </div>
 
-                <div class="flex items-center space-x-2">
-                    <button onclick="switchTab('calendar')" id="btn-calendar" class="px-4 py-2 rounded-xl text-sm font-medium transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
-                        <i class="fa-solid fa-calendar-days mr-2"></i>කැලැන්ඩරය
+                <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <button onclick="switchTab('calendar')" id="btn-calendar" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
+                        <i class="fa-solid fa-calendar-days mr-1.5"></i>කැලැන්ඩරය
                     </button>
-                    <button onclick="switchTab('guide')" id="btn-guide" class="px-4 py-2 rounded-xl text-sm font-medium transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                        <i class="fa-solid fa-book-open mr-2"></i>මාර්ගෝපදේශය
+                    <button onclick="switchTab('guide')" id="btn-guide" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-book-open mr-1.5"></i>මාර්ගෝපදේශය
                     </button>
                 </div>
             </div>
@@ -89,16 +72,51 @@
 
     <main id="outerMainWrapper" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all">
         
+        <!-- CALENDAR & TODO VIEW -->
         <div id="view-calendar" class="space-y-6">
+            
+            <!-- Gamified Stats & Progress Bar Header -->
+            <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-1">
+                            <span class="px-3 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800">
+                                <i class="fa-solid fa-fire text-amber-500 mr-1"></i> මතක පුහුණුව
+                            </span>
+                            <span id="streakBadge" class="text-xs text-slate-500 dark:text-slate-400 font-medium">අද දින පුනරාවර්තන සාර්ථකයි!</span>
+                        </div>
+                        <h2 class="text-xl font-black bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">ඔබේ මොළයේ මතක ධාරිතාව නංවාගන්න</h2>
+                    </div>
+                    <!-- Mini Stats Counters -->
+                    <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
+                        <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
+                            <span class="block text-xs text-slate-400 font-medium">මුළු පාඩම්</span>
+                            <span id="statTotalTopics" class="text-lg font-black text-indigo-600 dark:text-indigo-400">0</span>
+                        </div>
+                        <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
+                            <span class="block text-xs text-slate-400 font-medium">අද වැඩ</span>
+                            <span id="statTodayCount" class="text-lg font-black text-pink-600 dark:text-pink-400">0</span>
+                        </div>
+                        <div class="bg-white/80 dark:bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-center shadow-sm">
+                            <span class="block text-xs text-slate-400 font-medium">සාර්ථකත්ව</span>
+                            <span id="statCompletionRate" class="text-lg font-black text-emerald-600 dark:text-emerald-400">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="glass-card rounded-2xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-1">
+                
+                <!-- Topic Add Form -->
+                <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-1 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full pointer-events-none"></div>
                     <h2 class="text-lg font-bold mb-4 flex items-center text-indigo-600 dark:text-indigo-400">
                         <i class="fa-solid fa-plus-circle mr-2"></i>අද ඉගෙනගත් දෙය එක් කරන්න
                     </h2>
                     <form id="topicForm" onsubmit="addTopic(event)" class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විෂය (Subject)</label>
-                            <select id="topicSubject" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                            <select id="topicSubject" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
                                 <option value="physics">Physics (භෞතික විද්‍යාව)</option>
                                 <option value="chemistry">Chemistry (රසායන විද්‍යාව)</option>
                                 <option value="biology">Biology (ජීව විද්‍යාව)</option>
@@ -107,59 +125,68 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">මාතෘකාව හෝ පාඩම</label>
-                            <input type="text" id="topicName" required placeholder="උදා: ජාන විද්‍යාව (Genetics)" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                            <input type="text" id="topicName" required placeholder="උදා: ජාන විද්‍යාව (Genetics)" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">ඉගෙනගත් දිනය</label>
-                            <input type="date" id="topicDate" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                            <input type="date" id="topicDate" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">විස්තරයක් (අවශ්‍ය නම්)</label>
-                            <textarea id="topicDesc" rows="2" placeholder="මතක තබාගත යුතු විශේෂ කරුණු..." class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
+                            <textarea id="topicDesc" rows="2" placeholder="මතක තබාගත යුතු විශේෂ කරුණු..." class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
                         </div>
-                        <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 hover:opacity-95 transition-all text-sm">
+                        <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all text-sm flex items-center justify-center">
                             <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>මතක වක්‍රය සකස් කරන්න
                         </button>
                     </form>
                 </div>
 
-                <div class="glass-card rounded-2xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-2 flex flex-col justify-between">
+                <!-- Today's Checklist & All Topics Manager -->
+                <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none lg:col-span-2 flex flex-col justify-between">
                     <div>
-                        <div class="flex items-center justify-between mb-4">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
                             <h2 class="text-lg font-bold flex items-center text-pink-600 dark:text-pink-400">
                                 <i class="fa-solid fa-list-check mr-2"></i>අද කළ යුතු වැඩ ලැයිස්තුව (Today's Checklist)
                             </h2>
-                            <span id="todayCountBadge" class="px-3 py-1 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-300 text-xs font-bold rounded-full">0 යි</span>
+                            <div class="flex items-center space-x-2">
+                                <span id="todayCountBadge" class="px-3 py-1 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-300 text-xs font-bold rounded-full">0 යි</span>
+                                <button onclick="openManageModal()" class="px-3.5 py-2 rounded-2xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-slate-700 text-xs font-semibold hover:bg-indigo-100 transition-all shadow-sm">
+                                    <i class="fa-solid fa-sliders mr-1.5"></i>සියලු පාඩම් කළමනාකරණය
+                                </button>
+                            </div>
                         </div>
                         <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">අද දිනට නියමිත පුනරාවර්තන හෝ පාඩම් අවසන් වූ පසු ටික් (✓) කරන්න:</p>
-                        <div id="todayReviewsList" class="space-y-3 max-h-[220px] overflow-y-auto pr-2">
-                            <div class="text-center py-8 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>
+                        <div id="todayReviewsList" class="space-y-3 max-h-[280px] overflow-y-auto pr-2">
+                            <div class="text-center py-10 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>
                         </div>
                     </div>
+                    
                     <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                         <div class="flex items-center space-x-3">
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1.5"></span>Physics</span>
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 mr-1.5"></span>Chemistry</span>
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-1.5"></span>Biology</span>
-                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5"></span>Maths</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1.5 shadow-sm shadow-blue-500/50"></span>Physics</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 mr-1.5 shadow-sm shadow-purple-500/50"></span>Chemistry</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-1.5 shadow-sm shadow-emerald-400/50"></span>Biology</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5 shadow-sm shadow-amber-500/50"></span>Maths</span>
                         </div>
-                        <button onclick="clearAllData()" class="text-red-500 hover:underline"><i class="fa-solid fa-trash mr-1"></i>සියල්ල මකන්න</button>
+                        <button onclick="clearAllData()" class="text-red-500 hover:text-red-600 font-medium transition-all hover:scale-105"><i class="fa-solid fa-trash mr-1"></i>සියලු දත්ත මකන්න</button>
                     </div>
                 </div>
+
             </div>
 
-            <div class="glass-card rounded-2xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none">
+            <!-- Calendar Grid Card -->
+            <div class="glass-card rounded-3xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-xl shadow-slate-200/50 dark:shadow-none">
                 <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
                     <div class="flex items-center space-x-4">
                         <h2 id="currentMonthYear" class="text-xl font-bold text-slate-800 dark:text-slate-100">සැප්තැම්බර් 2026</h2>
-                        <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
-                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all text-xs"><i class="fa-solid fa-chevron-left"></i></button>
-                            <button onclick="goToCurrentMonth()" class="px-3 py-1 text-xs font-medium hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all">අද</button>
-                            <button onclick="changeMonth(1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all text-xs"><i class="fa-solid fa-chevron-right"></i></button>
+                        <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 rounded-2xl p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all text-xs"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button onclick="goToCurrentMonth()" class="px-3 py-1 text-xs font-semibold hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all">අද</button>
+                            <button onclick="changeMonth(1)" class="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all text-xs"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400 italic">
-                        💡 දවසක් මත ක්ලික් කර එම දිනට අදාළ සියලුම විස්තර හා සටහන් බලන්න
+                    <div class="text-xs text-slate-500 dark:text-slate-400 italic bg-indigo-50 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-indigo-100 dark:border-slate-700">
+                        💡 දවසක් මත ක්ලික් කර එම දිනට අදාළ සියලුම විස්තර බලන්න
                     </div>
                 </div>
 
@@ -171,88 +198,96 @@
             </div>
         </div>
 
+        <!-- GUIDE VIEW (COMPREHENSIVE & EXPANDED) -->
         <div id="view-guide" class="hidden space-y-8 max-w-4xl mx-auto">
             <div class="glass-card rounded-3xl p-8 border border-slate-200/60 dark:border-slate-700/60 shadow-xl relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800 mb-4 inline-block">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> සම්පූර්ණ අධ්‍යයන මාර්ගෝපදේශය
+                </span>
                 <h2 class="text-3xl font-extrabold mb-4 bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
-                    මොකක්ද මේ Forgetting Curve (අමතක වීමේ වක්‍රය) සහ Spaced Repetition කියන්නේ?
+                    මොකක්ද මේ Ebbinghaus Forgetting Curve සහ Spaced Repetition කියන්නේ?
                 </h2>
-                <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    අපි යම් අලුත් තොරතුරක්, පාඩමක් (Physics, Chemistry, Biology හෝ Combined Maths වැනි විෂය කරුණක්) ඉගෙන ග පසු, කාලයත් සමඟ අපේ මොළයෙන් එම මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. 
+                <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6 text-sm sm:text-base">
+                    අපි යම් අලුත් තොරතුරක් හෝ පාඩමක් ඉගෙන ගත් පසු, කාලයත් සමඟ අපේ මතකය ක්‍රමයෙන් මැකී යාමට පටන් ගනී. ජර්මානු මනෝවිද්‍යාඥ <b>Hermann Ebbinghaus</b> විසින් 1885 දී සොයා ගන්නා ලද මෙම සංසිද්ධිය <b>"අමතක වීමේ වක්‍රය" (Forgetting Curve)</b> ලෙස හැඳින්වේ. ඔහුගේ පර්යේෂණ මගින් පෙන්වා දුන්නේ මිනිස් මොළය කිසිදු පුනරාවර්තනයක් නොකළහොත්, පළමු පැය 24 ඇතුළත අලුත් තොරතුරුවලින් 70%ක් පමණ අමතක කර දමන බවයි!
                 </p>
-                <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    විද්‍යාත්මක පර්යේෂණවලට අනුව, අප ඉගෙන ගන්නා දේවලින් <b>50% කට වැඩි ප්‍රමාණයක් පැය 24 ඇතුළත</b> අපට අමතක වී යයි. දින කිහිපයක් ගත වන විට එම ප්‍රතිශතය 80% ඉක්මවා යයි. මෙයින් අදහස් වන්නේ සාමාන්‍ය ක්‍රමයට එක් වරක් කියවීම පමණක් ප්‍රමාණවත් නොවන බවයි.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-indigo-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-indigo-100 dark:border-slate-700">
-                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 flex items-center"><i class="fa-solid fa-lightbulb mr-2"></i>Hermann Ebbinghaus ගේ සොයාගැනීම</h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Ebbinghaus විසින් සොයා ගන්නා ලද්දේ මුල් අවධියේදී මතකය ඉතා වේගයෙන් ක්ෂය වුවද, නියමිත කාල පරතරයන්හිදී (Spaced Intervals) නැවත මතක් කරගැනීම මඟින් එම වක්‍රයේ පහළට වැටීම නැවැත්විය හැකි බවයි. සෑම පුනරාවර්තනයක් සමඟම මතකය වඩාත් ශක්තිමත් වන අතර අමතක වීමේ වේගය මන්දගාමී වේ.
-                        </p>
+
+                <!-- Scientific SVG Visual Graphic of Forgetting Curve with Proper Exponential Decay & Spaced Repetition Steps -->
+                <div class="my-8 p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden text-white">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-sm text-indigo-400 flex items-center"><i class="fa-solid fa-chart-line mr-2"></i>විද්‍යාත්මක Ebbinghaus අමතක වීමේ වක්‍රය සහ Spaced Repetition ප්‍රස්ථාරය</h4>
+                        <span class="text-[11px] bg-indigo-950 text-indigo-300 px-2.5 py-1 rounded-full border border-indigo-800">මතක රඳවාගැනීමේ ප්‍රතිශතය (%) vs කාලය (දින)</span>
                     </div>
-                    <div class="bg-pink-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-pink-100 dark:border-slate-700">
-                        <h3 class="font-bold text-pink-600 dark:text-pink-400 mb-2 flex items-center"><i class="fa-solid fa-shield-halved mr-2"></i>දිගුකාලීන මතකය (Long-term Memory & Beyond 30 Days)</h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            දින 30න් පසුවත් මතකය සදහටම නොමැකී තබා ගැනීම සඳහා තවත් ඉදිරි කාල පරතරයන් (දින 60, දින 90 සහ දින 120 ආදී වශයෙන්) ඉතා වැදගත් වේ. අපගේ පද්ධතිය දැන් ප්‍රශස්ත විද්‍යාත්මක පරතරයන් ආවරණය කරමින් ඔබේ මොළයට දීර්ඝකාලීන මතක තබාගැනීමේ හැකියාව ලබා දෙයි.
-                        </p>
+                    <div class="relative w-full h-60 sm:h-72 flex items-end">
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 600 260" preserveAspectRatio="none">
+                            <!-- Horizontal grid lines (0%, 25%, 50%, 75%, 100%) -->
+                            <line x1="0" y1="10" x2="600" y2="10" stroke="#334155" stroke-dasharray="4" />
+                            <line x1="0" y1="70" x2="600" y2="70" stroke="#334155" stroke-dasharray="4" />
+                            <line x1="0" y1="130" x2="600" y2="130" stroke="#334155" stroke-dasharray="4" />
+                            <line x1="0" y1="190" x2="600" y2="190" stroke="#334155" stroke-dasharray="4" />
+                            <line x1="0" y1="250" x2="600" y2="250" stroke="#64748b" stroke-width="2" />
+                            <line x1="0" y1="10" x2="0" y2="250" stroke="#64748b" stroke-width="2" />
+
+                            <!-- Axis labels -->
+                            <text x="10" y="25" fill="#94a3b8" font-size="10">100%</text>
+                            <text x="10" y="85" fill="#94a3b8" font-size="10">75%</text>
+                            <text x="10" y="145" fill="#94a3b8" font-size="10">50%</text>
+                            <text x="10" y="205" fill="#94a3b8" font-size="10">25%</text>
+
+                            <!-- Natural Forgetting Curve (Steep exponential drop from 100% to near 20% in day 1, then flattening) -->
+                            <!-- Formula representation curve: starts at (0, 10), drops sharply to (100, 180) [Day 1], then tapers off to (600, 230) -->
+                            <path d="M 0,10 C 25,140 60,180 120,195 C 250,210 400,225 600,232" fill="none" stroke="#f43f5e" stroke-width="3.5" stroke-dasharray="6" />
+
+                            <!-- Spaced Repetition Lifted Curve (Steps up at intervals: Day 1, Day 3, Day 6, Day 12, Day 30) -->
+                            <path d="M 0,10 C 25,140 50,185 60,190 L 60,20 C 120,130 180,175 190,180 L 190,30 C 270,110 350,150 360,155 L 360,40 C 460,90 560,110 600,60" fill="none" stroke="#6366f1" stroke-width="4" />
+                        </svg>
+
+                        <!-- Absolute positioned annotations on SVG -->
+                        <div class="absolute top-2 left-16 text-[10px] text-indigo-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-indigo-500/30">Spaced Repetition මගින් මතකය ඉහළ නැංවීම</div>
+                        <div class="absolute bottom-4 right-4 text-[10px] text-pink-400 font-bold bg-slate-900/80 px-2 py-0.5 rounded border border-pink-500/30">--- සාමාන්‍ය අමතක වීමේ වක්‍රය (පුනරාවර්තන නොමැතිව)</div>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2 mt-4 pt-4 border-t border-slate-800 text-center text-[11px] text-slate-400 font-medium">
+                        <div>දින 0<br><span class="text-[10px] text-slate-500">මුල් ඉගෙනුම</span></div>
+                        <div>දින 1<br><span class="text-[10px] text-indigo-400">1 වන පුනරාවර්තනය</span></div>
+                        <div>දින 3 - 6<br><span class="text-[10px] text-indigo-400">2 සහ 3 වාර</span></div>
+                        <div>දින 12 - 30<br><span class="text-[10px] text-indigo-400">දිගුකාලීන මතකය</span></div>
+                        <div>දින 60 - 90<br><span class="text-[10px] text-emerald-400">ස්ථිර මතක තැන්බතුව</span></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="glass-card rounded-3xl p-8 border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
-                <h3 class="text-xl font-bold mb-6 text-slate-800 dark:text-slate-100 flex items-center">
-                    <i class="fa-solid fa-book-bookmark mr-3 text-indigo-600"></i>සම්පූර්ණ විද්‍යාත්මක පසුබිම සහ දින පරතර ක්‍රමවේදය
-                </h3>
-                <div class="space-y-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    <p>
-                        මිනිස් මොළය යනු ස්වභාවිකවම අනවශ්‍ය තොරතුරු ඉවත් කරමින් ශක්තිමත් තොරතුරු පමණක් රඳවා ගන්නා පද්ධතියකි. ඔබ යම් විෂය කරුණක් කියවන විට මොළය සිතන්නේ එය එදිනෙදා ජීවිතයට අත්‍යවශ්‍ය නොවන තාවකාලික තොරතුරක් බවයි. එමනිසා එය ඉක්මනින් ඉවත් කිරීමට උත්සාහ කරයි.
-                    </p>
-                    <p>
-                        නමුත් ඔබ නිශ්චිත දින පරතරයන් යටතේ (Spaced Repetition) එය නැවත විවෘත කර බලන විට, මොළයට සංඥාවක් යැවේ: <em>"මෙය නැවත නැවතත් අවශ්‍ය වන වැදගත් තොරතුරක්, එබැවින් මෙය දිගුකාලීන ගබඩාවේ (Long-term storage) සුරක්ෂිත කළ යුතුය."</em>
-                    </p>
-                    <div class="bg-slate-100 dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 my-4">
-                        <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">පරතරයන්හි විද්‍යාත්මක වැදගත්කම:</h4>
-                        <ul class="list-disc list-inside space-y-1.5 text-xs">
-                            <li><b>1 වන දිනය (Day 1):</b> මුල් පාඩම ඉගෙනගත් විගස මතකය නැවුම් කිරීම.</li>
-                            <li><b>3 සහ 6 වන දිනය (Day 3 & 6):</b> වේගවත් අමතක වීමේ කලාපය සාර්ථකව මඟහරවා ගැනීම.</li>
-                            <li><b>12 සහ 20 වන දිනය (Day 12 & 20):</b> මධ්‍යකාලීන මතකයට තොරතුරු තැන්පත් කිරීම.</li>
-                            <li><b>30, 60 සහ 90 වන දිනය (Day 30, 60 & 90):</b> සදහටම දිගුකාලීන මතකයට (Permanent Memory) අන්තර්ගත කිරීම.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card rounded-3xl p-8 border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
-                <h3 class="text-xl font-bold mb-6 text-slate-800 dark:text-slate-100 flex items-center">
-                    <i class="fa-solid fa-list-check mr-3 text-indigo-600"></i>ඔබ මේ ඇප් එක භාවිතයෙන් කළ යුත්තේ කුමක්ද? (උපදෙස්)
-                </h3>
                 <div class="space-y-6">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-md shadow-indigo-600/30">1</div>
-                        <div>
-                            <h4 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">විෂය සහ පාඩම තෝරා ඇතුළත් කරන්න</h4>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Physics, Chemistry, Biology හෝ Combined Maths යන විෂයයන්ගෙන් එකක් තෝරා, අද දින අලුතින් හැදෑරූ මාතෘකාව පෝරමයේ සටහන් කර ඉගෙනගත් දිනය ලබා දෙන්න.</p>
+                    <div class="bg-indigo-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-indigo-100 dark:border-slate-700 shadow-sm">
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-3 flex items-center text-lg"><i class="fa-solid fa-lightbulb mr-2"></i>Spaced Repetition (පරතර සහිත පුනරාවර්තනය) ක්‍රියාත්මක වන්නේ කෙසේද?</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            මොළය ස්වභාවයෙන්ම තොරතුරු අමතක කිරීමට උත්සාහ කරන විට, හරියටම එම අමතක වීමට ඔන්න මෙන්න තියෙන අවස්ථාවේදී (At the verge of forgetting) නැවත එම පාඩම මතක් කරගැනීම මඟින් මොළයට ප්‍රබල සංඥාවක් ලැබෙයි <i>"මෙම තොරතුර ඉතා වැදගත්ය, එය මැකී යාමට ඉඩ නොදිය යුතුය"</i> කියා. මෙයින් මතකය දිගුකාලීන මතක තැන්බතුවට (Long-Term Memory) ස්ථිරවම ගමන් කරයි.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="bg-white dark:bg-slate-700/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-600">
+                                <h4 class="font-bold text-xs text-indigo-600 dark:text-indigo-300 mb-1">🎯 1. සක්‍රීය සිහිපත් කිරීම (Active Recall)</h4>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-300">නිකම්ම පොත කියවනවා වෙනුවට, තොරතුරු මොළයෙන් ඉවතට ඇදලා මතක් කරගැනීම.</p>
+                            </div>
+                            <div class="bg-white dark:bg-slate-700/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-600">
+                                <h4 class="font-bold text-xs text-pink-600 dark:text-pink-300 mb-1">⏳ 2. ක්‍රමානුකූල කාල පරතර (Spaced Intervals)</h4>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-300">දින 1, 3, 6, 12, 20, 30, 60 සහ 90 වැනි නිශ්චිත පරතර හරහා පුනරාවර්තනය කිරීම.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex items-start space-x-4">
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-md shadow-indigo-600/30">2</div>
-                        <div>
-                            <h4 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">ස්වයංක්‍රීය කාල පරතරයන් පරීක්ෂා කරන්න</h4>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">ඇප් එක මඟින් ස්වයංක්‍රීයව දින <b>1, 3, 6, 12, 20, 30, 60</b> සහ <b>90</b> යන විද්‍යාත්මක පරතරයන්ට අනුව ඔබ එය නැවත බැලිය යුතු දින කැලැන්ඩරය මත අදාළ විෂය වර්ණයෙන් සටහන් කරනු ඇත.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-4">
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-md shadow-indigo-600/30">3</div>
-                        <div>
-                            <h4 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">දින දර්ශනය ක්ලික් කර දින ඇතුළට යන්න</h4>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">කැලැන්ඩරයේ ඕනෑම දවසක් මත ක්ලික් කිරීමෙන් එදාට අදාළව පුනරාවර්තනය කළ යුතු හෝ මුලින් ඉගෙනගත් සියලුම පාඩම් ලැයිස්තුව විස්තර සහිතව බලාගත හැක.</p>
-                        </div>
+
+                    <div class="bg-pink-50/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-pink-100 dark:border-slate-700 shadow-sm">
+                        <h3 class="font-bold text-pink-600 dark:text-pink-400 mb-3 flex items-center text-lg"><i class="fa-solid fa-shield-halved mr-2"></i>A/L හෝ ඕනෑම විභාගයකදී ඉහළ ලකුණු ලබා ගැනීමට මෙම යෙදුම භාවිතා කරන්නේ කෙසේද?</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <li><b>අද ඉගෙනගත් දෙය එක් කරන්න:</b> පාසලේදී හෝ පන්තියේදී උගත් භෞතික විද්‍යාව, රසායන විද්‍යාව, ජීව විද්‍යාව හෝ ගණිත පාඩම අද දිනට අදාළව ඇතුළත් කරන්න.</li>
+                            <li><b>ස්වයංක්‍රීය කාලසටහන:</b> අපගේ යෙදුම මඟින් ස්වයංක්‍රීයව දින 1, 3, 6, 12, 20, 30, 60 සහ 90 යන මතක වක්‍ර පරතර ගණනය කර කැලැන්ඩරයේ සලකුණු කරයි.</li>
+                            <li><b>දෛනික පිරික්සුම් ලැයිස්තුව (Checklist):</b> සෑම දිනකම උදෑසන යෙදුමට පිවිස අද දිනට නියමිත පුනරාවර්තන මොනවාදැයි බලා ඒවා අවසන් කළ පසු ✓ ලකුණු කරන්න.</li>
+                            <li><b>විභාග ජයග්‍රහණය:</b> මෙම ක්‍රමය නිවැරදිව අනුගමනය කිරීමෙන් ඔබට විභාග ශාලාවට යන තුරුත් පාඩම් අමතක වීමකින් තොරව මනාව මතක තබාගත හැක.</li>
+                        </ol>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Day Detail Modal -->
     <div id="dayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
         <div class="glass-card rounded-3xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
@@ -268,6 +303,25 @@
         </div>
     </div>
 
+    <!-- Manage Topics Modal (Individual Delete Feature) -->
+    <div id="manageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+        <div class="glass-card rounded-3xl max-w-xl w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                        <i class="fa-solid fa-list mr-2 text-indigo-600"></i>සියලු පාඩම් ලැයිස්තුව (කළමනාකරණය)
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">මෙහිදී ඔබට අවශ්‍ය නැති පාඩමක් පමණක් තනි තනිව මකා දැමිය හැක.</p>
+                </div>
+                <button onclick="closeManageModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 transition-all text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="manageTopicsList" class="space-y-3 max-h-[380px] overflow-y-auto pr-1"></div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
     <div id="msgModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
         <div class="glass-card rounded-3xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl text-center">
             <div id="msgIcon" class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4">
@@ -285,7 +339,6 @@
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
 
-        // Firebase Configuration (ලැබී ඇති අලුත් විස්තර මෙහි ඇතුළත් කර ඇත)
         const firebaseConfig = {
             apiKey: "AIzaSyD3I1nZ9tgTeqNUFJiapphjjHaILBq-XtQ",
             authDomain: "memory-vault-39654.firebaseapp.com",
@@ -299,23 +352,20 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'memory-vault-39654';
 
         const app = initializeApp(firebaseConfig);
-        let analytics = null;
         let db = null;
         let auth = null;
         let googleProvider = null;
         
         try {
-            analytics = getAnalytics(app);
             db = getFirestore(app);
             auth = getAuth(app);
             googleProvider = new GoogleAuthProvider();
         } catch (e) {
-            console.warn("Firebase initialization warning:", e);
+            console.warn("Firebase warning:", e);
         }
 
         let currentUser = null;
         let unsubscribeFirestore = null;
-        let isCloudSynced = false;
 
         const subjectConfig = {
             physics: { name: 'Physics', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800', dot: 'bg-blue-500' },
@@ -331,14 +381,19 @@
         document.getElementById('topicDate').valueAsDate = new Date();
 
         window.addEventListener('DOMContentLoaded', async () => {
-            // Load local storage data first for instant offline availability
+            // Dark mode init
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').className = "fa-solid fa-sun";
+            }
+
             topics = JSON.parse(localStorage.getItem('forgetting_topics')) || [];
             completedTasks = JSON.parse(localStorage.getItem('forgetting_completed_tasks')) || {};
             renderCalendar();
             renderTodayReviews();
+            updateStatsBar();
 
             if (!auth) return;
-
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
@@ -346,33 +401,39 @@
                     await signInAnonymously(auth);
                 }
             } catch (e) {
-                console.warn("Auth initialization notice:", e);
+                console.warn("Auth notice:", e);
             }
 
             onAuthStateChanged(auth, (user) => {
                 currentUser = user;
                 updateAuthUI();
-                if (user && db) {
-                    syncUserData(user.uid);
-                }
+                if (user && db) syncUserData(user.uid);
             });
         });
 
+        window.toggleDarkMode = function() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('themeIcon').setAttribute('class', 'fa-solid fa-moon');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('themeIcon').setAttribute('class', 'fa-solid fa-sun');
+            }
+        };
+
         window.handleGoogleSignIn = async function() {
             if (!auth || !googleProvider) {
-                showMessage('सूचना', 'ගිණුම් ප්‍රවේශය දැනට නොමැත. Local Storage මඟින් දත්ත සුරක්ෂිත වේ.');
+                showMessage('सूचना', 'Local Storage මඟින් දත්ත සුරක්ෂිත වේ.');
                 return;
             }
             try {
                 await signInWithPopup(auth, googleProvider);
                 showMessage('සාර්ථකයි!', 'Google ගිණුම හරහා සාර්ථකව Sign In විය!');
             } catch (error) {
-                console.warn("Google Sign-In Warning:", error);
-                if (error.code === 'auth/unauthorized-domain') {
-                    showMessage('දසමයක්!', 'මෙම ඩොමේන් එක Firebase Authentication Settings වලට අනුමත කර නැත (Unauthorized Domain). කෙසේ වෙතත්, ඔබගේ දත්ත ඔබගේ බ්‍රව්සරයේ (LocalStorage) ඉතා ආරක්ෂිතව සුරැකේ!', true);
-                } else {
-                    showMessage('දෝෂයකි', 'Google හරහා ලොග් වීමේදී දෝෂයක් ඇතිවිය. කරුණාකර නැවත උත්සාහ කරන්න.', true);
-                }
+                console.warn("Sign-In Warning:", error);
+                showMessage('දෝෂයකි', 'ගිණුම් ප්‍රවේශයේදී දෝෂයක් ඇතිවිය.', true);
             }
         };
 
@@ -381,10 +442,8 @@
             try {
                 await signOut(auth);
                 await signInAnonymously(auth);
-                showMessage('ප්‍රවේශය අත්හරින ලදී', 'ඔබ සාර්ථකව ගිණුමෙන් ඉවත් විය.');
-            } catch (error) {
-                console.warn("Sign Out Warning:", error);
-            }
+                showMessage('සාර්ථකයි', 'ඔබ සාර්ථකව ගිණුමෙන් ඉවත් විය.');
+            } catch (error) {}
         };
 
         function updateAuthUI() {
@@ -393,7 +452,7 @@
                 const displayName = currentUser.displayName ? currentUser.displayName.split(' ')[0] : 'User';
                 authBtn.onclick = handleSignOut;
                 authBtn.innerHTML = `
-                    <img src="${currentUser.photoURL || 'https://placehold.co/24x24/6366f1/ffffff?text=U'}" class="w-5 h-5 rounded-full object-cover" onerror="this.src='https://placehold.co/24x24/6366f1/ffffff?text=U'"/>
+                    <img src="${currentUser.photoURL || 'https://placehold.co/24x24/6366f1/ffffff?text=U'}" class="w-5 h-5 rounded-full object-cover"/>
                     <span class="max-w-[90px] truncate">${displayName} (ඉවත් වන්න)</span>
                 `;
             } else {
@@ -407,10 +466,7 @@
 
         function syncUserData(userId) {
             if (!db) return;
-            if (unsubscribeFirestore) {
-                unsubscribeFirestore();
-            }
-
+            if (unsubscribeFirestore) unsubscribeFirestore();
             const docRef = doc(db, 'artifacts', appId, 'users', userId, 'studyData', 'main');
 
             unsubscribeFirestore = onSnapshot(docRef, (docSnap) => {
@@ -418,17 +474,13 @@
                     const data = docSnap.data();
                     topics = data.topics || topics;
                     completedTasks = data.completedTasks || completedTasks;
-                    isCloudSynced = true;
                 } else {
-                    if (topics.length > 0 || Object.keys(completedTasks).length > 0) {
-                        saveToCloud();
-                    }
+                    if (topics.length > 0) saveToCloud();
                 }
                 renderCalendar();
                 renderTodayReviews();
-            }, (error) => {
-                console.warn("Firestore sync notice (using local storage fallback):", error.message);
-            });
+                updateStatsBar();
+            }, (error) => {});
         }
 
         async function saveToCloud() {
@@ -436,59 +488,51 @@
             localStorage.setItem('forgetting_completed_tasks', JSON.stringify(completedTasks));
 
             if (!currentUser || !db) return;
-
             try {
                 const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'studyData', 'main');
-                await setDoc(docRef, {
-                    topics: topics,
-                    completedTasks: completedTasks,
-                    updatedAt: new Date().toISOString()
-                });
-            } catch (e) {
-                console.warn("Cloud save notice:", e.message);
-            }
+                await setDoc(docRef, { topics: topics, completedTasks: completedTasks, updatedAt: new Date().toISOString() });
+            } catch (e) {}
         }
 
-        window.setDeviceMode = function(mode) {
-            const mainContainer = document.getElementById('outerMainWrapper');
-            const headerContainer = document.getElementById('mainHeaderContainer');
-            const btnLaptop = document.getElementById('mode-laptop');
-            const btnMobile = document.getElementById('mode-mobile');
+        function updateStatsBar() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            let todayTotal = 0;
+            let todayDone = 0;
 
-            const activeClass = "px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all bg-indigo-600 text-white shadow-sm";
-            const normalClass = "px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300";
+            topics.forEach(t => {
+                if(t.reviewDates.includes(todayStr) || t.baseDate === todayStr) {
+                    todayTotal++;
+                    const type = t.baseDate === todayStr ? 'මුල් ඉගෙනුම' : 'පුනරාවර්තනය';
+                    if(completedTasks[`${t.id}_${todayStr}_${type}`]) {
+                        todayDone++;
+                    }
+                }
+            });
 
-            btnLaptop.className = normalClass;
-            btnMobile.className = normalClass;
-
-            if (mode === 'laptop') {
-                btnLaptop.className = activeClass;
-                mainContainer.classList.remove('device-frame-mobile');
-                headerContainer.classList.remove('max-w-md');
-            } else if (mode === 'mobile') {
-                btnMobile.className = activeClass;
-                mainContainer.classList.add('device-frame-mobile');
-                headerContainer.classList.add('max-w-md');
+            document.getElementById('statTotalTopics').innerText = topics.length;
+            document.getElementById('statTodayCount').innerText = todayTotal;
+            const rate = todayTotal > 0 ? Math.round((todayDone / todayTotal) * 100) : 0;
+            document.getElementById('statCompletionRate').innerText = `${rate}%`;
+            
+            if(todayTotal > 0 && todayDone === todayTotal) {
+                document.getElementById('streakBadge').innerHTML = `<i class="fa-solid fa-award text-amber-500 mr-1"></i> අද සියලුම පුනරාවර්තන සාර්ථකව අවසන්! 🎉`;
+            } else {
+                document.getElementById('streakBadge').innerHTML = `අද දිනට ඉතිරි පුනරාවර්තන: ${todayTotal - todayDone}`;
             }
-        };
+        }
 
         window.showMessage = function(title, text, isError = false) {
             document.getElementById('msgTitle').innerText = title;
             document.getElementById('msgText').innerText = text;
             const iconDiv = document.getElementById('msgIcon');
-            if(isError) {
-                iconDiv.className = "w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 flex items-center justify-center text-xl mx-auto mb-4";
-                iconDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
-            } else {
-                iconDiv.className = "w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4";
-                iconDiv.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
-            }
+            iconDiv.className = isError 
+                ? "w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 flex items-center justify-center text-xl mx-auto mb-4"
+                : "w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xl mx-auto mb-4";
+            iconDiv.innerHTML = isError ? '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-circle-info"></i>';
             document.getElementById('msgModal').classList.remove('hidden');
         };
 
-        window.closeMsgModal = function() {
-            document.getElementById('msgModal').classList.add('hidden');
-        };
+        window.closeMsgModal = function() { document.getElementById('msgModal').classList.add('hidden'); };
 
         window.switchTab = function(tab) {
             const calView = document.getElementById('view-calendar');
@@ -499,13 +543,13 @@
             if(tab === 'calendar') {
                 calView.classList.remove('hidden');
                 guideView.classList.add('hidden');
-                btnCal.className = "px-4 py-2 rounded-xl text-sm font-medium transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-                btnGuide.className = "px-4 py-2 rounded-xl text-sm font-medium transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
+                btnCal.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
+                btnGuide.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
             } else {
                 calView.classList.add('hidden');
                 guideView.classList.remove('hidden');
-                btnGuide.className = "px-4 py-2 rounded-xl text-sm font-medium transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
-                btnCal.className = "px-4 py-2 rounded-xl text-sm font-medium transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
+                btnGuide.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
+                btnCal.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300";
             }
         };
 
@@ -539,22 +583,27 @@
             saveAndRender();
             document.getElementById('topicForm').reset();
             document.getElementById('topicDate').valueAsDate = new Date();
-            showMessage('සාර්ථකයි!', 'නව පාඩම සහ මතක වක්‍ර කාල පරතරයන් සාර්ථකව එකතු කර සේව් කරන ලදී!');
+            showMessage('සාර්ථකයි!', 'නව පාඩම සහ මතක වක්‍ර කාල පරතරයන් සාර්ථකව එකතු කරන ලදී!');
         };
 
         function saveAndRender() {
             saveToCloud();
             renderCalendar();
             renderTodayReviews();
+            updateStatsBar();
         }
 
         window.toggleTaskCompletion = function(taskKey) {
-            if(completedTasks[taskKey]) {
-                delete completedTasks[taskKey];
-            } else {
-                completedTasks[taskKey] = true;
-            }
+            if(completedTasks[taskKey]) delete completedTasks[taskKey];
+            else completedTasks[taskKey] = true;
             saveAndRender();
+        };
+
+        window.deleteTopic = function(topicId) {
+            topics = topics.filter(t => t.id !== topicId);
+            saveAndRender();
+            openManageModal();
+            showMessage('මකා දමන ලදී', 'අදාළ පාඩම සාර්ථකව ඉවත් කරන ලදී.');
         };
 
         window.clearAllData = function() {
@@ -566,73 +615,75 @@
             }
         };
 
+        window.openManageModal = function() {
+            const container = document.getElementById('manageTopicsList');
+            if(topics.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">තවම පාඩම් එකතු කර නැත.</div>`;
+            } else {
+                container.innerHTML = topics.map(t => {
+                    const subjInfo = subjectConfig[t.subject] || { name: t.subject, badge: 'bg-slate-100 text-slate-700' };
+                    return `
+                        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
+                                    <span class="text-[10px] text-slate-400">දිනය: ${t.baseDate}</span>
+                                </div>
+                                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">${t.name}</h4>
+                            </div>
+                            <button onclick="deleteTopic(${t.id})" class="px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 hover:bg-red-100 text-xs font-semibold flex items-center transition-all">
+                                <i class="fa-solid fa-trash mr-1.5"></i>මකන්න
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            document.getElementById('manageModal').classList.remove('hidden');
+        };
+
+        window.closeManageModal = function() { document.getElementById('manageModal').classList.add('hidden'); };
+
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-
             const monthsSinhala = ["ජනවාරි", "පෙබරවාරි", "මාර්තු", "අප්‍රේල්", "මැයි", "ජූනි", "ජූලි", "අගෝස්තු", "සැප්තැම්බර්", "ඔක්තෝබර්", "නොවැම්බර්", "දෙසැම්බර්"];
             document.getElementById('currentMonthYear').innerText = `${monthsSinhala[month]} ${year}`;
 
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
             const prevTotalDays = new Date(year, month, 0).getDate();
-
             const container = document.getElementById('calendarDays');
             container.innerHTML = '';
-
             const todayStr = new Date().toISOString().split('T')[0];
 
             for (let i = firstDayIndex - 1; i >= 0; i--) {
-                const dayNum = prevTotalDays - i;
-                const cell = createDayCell(dayNum, true, null, []);
-                container.appendChild(cell);
+                container.appendChild(createDayCell(prevTotalDays - i, true, null, []));
             }
 
             for (let i = 1; i <= totalDays; i++) {
                 const monthStr = String(month + 1).padStart(2, '0');
                 const dayStrNum = String(i).padStart(2, '0');
                 const dateKey = `${year}-${monthStr}-${dayStrNum}`;
-
                 let matchedTopics = [];
 
                 topics.forEach(t => {
-                    if(t.baseDate === dateKey) {
-                        matchedTopics.push({
-                            id: t.id,
-                            name: t.name,
-                            subject: t.subject,
-                            type: 'මුල් ඉගෙනුම',
-                            desc: t.description
-                        });
-                    }
-                    if(t.reviewDates.includes(dateKey)) {
-                        matchedTopics.push({
-                            id: t.id,
-                            name: t.name,
-                            subject: t.subject,
-                            type: 'පුනරාවර්තනය',
-                            desc: t.description
-                        });
-                    }
+                    if(t.baseDate === dateKey) matchedTopics.push({ id: t.id, name: t.name, subject: t.subject, type: 'මුල් ඉගෙනුම', desc: t.description });
+                    if(t.reviewDates.includes(dateKey)) matchedTopics.push({ id: t.id, name: t.name, subject: t.subject, type: 'පුනරාවර්තනය', desc: t.description });
                 });
 
-                const isToday = (dateKey === todayStr);
-                const cell = createDayCell(i, false, dateKey, matchedTopics, isToday);
-                container.appendChild(cell);
+                container.appendChild(createDayCell(i, false, dateKey, matchedTopics, (dateKey === todayStr)));
             }
         }
 
         function createDayCell(dayNum, isInactive, dateKey, matchedTopics, isToday) {
             const div = document.createElement('div');
-            let classes = "min-h-[95px] rounded-2xl p-2.5 border flex flex-col justify-between transition-all relative cursor-pointer ";
-
+            let classes = "min-h-[95px] rounded-2xl p-2.5 border flex flex-col justify-between transition-all relative ";
             if(isInactive) {
-                classes += "bg-slate-50/40 dark:bg-slate-800/20 border-slate-100 dark:border-slate-800/40 text-slate-300 dark:text-slate-600 cursor-default";
+                classes += "bg-slate-50/40 dark:bg-slate-800/20 border-slate-100 dark:border-slate-800/40 text-slate-300 dark:text-slate-600";
             } else {
-                classes += "bg-white dark:bg-slate-800/70 border-slate-200/70 dark:border-slate-700/70 hover:border-indigo-500 shadow-sm";
+                classes += "bg-white dark:bg-slate-800/70 border-slate-200/70 dark:border-slate-700/70 hover:border-indigo-500 shadow-sm cursor-pointer hover:scale-[1.02]";
                 if(isToday) classes += " ring-2 ring-indigo-500/50 bg-indigo-50/30 dark:bg-indigo-950/20";
             }
-
             div.className = classes;
 
             let indicatorsHTML = '';
@@ -644,9 +695,7 @@
                     let dotColor = subjectConfig[item.subject]?.dot || 'bg-indigo-500';
                     indicatorsHTML += `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200"><span class="w-1.5 h-1.5 rounded-full ${dotColor} mr-1"></span>${item.name.substring(0, 8)}...</span>`;
                 }
-                if(matchedTopics.length > limit) {
-                    indicatorsHTML += `<span class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400">+${matchedTopics.length - limit}</span>`;
-                }
+                if(matchedTopics.length > limit) indicatorsHTML += `<span class="text-[9px] font-bold text-indigo-600">+${matchedTopics.length - limit}</span>`;
                 indicatorsHTML += `</div>`;
             }
 
@@ -658,26 +707,18 @@
                 <div>${indicatorsHTML}</div>
             `;
 
-            if(!isInactive && dateKey) {
-                div.onclick = () => window.openDayModal(dateKey, matchedTopics);
-            }
-
+            if(!isInactive && dateKey) div.onclick = () => window.openDayModal(dateKey, matchedTopics);
             return div;
         }
 
         window.openDayModal = function(dateKey, matchedTopics) {
             const dateParts = dateKey.split('-');
             document.getElementById('modalDateTitle').innerText = `${dateParts[0]} වසරේ ${dateParts[1]} මස ${dateParts[2]} වන දින`;
-            document.getElementById('modalDateSubtitle').innerText = `එදිනට නියමිත පාඩම් සහ පුනරාවර්තන සංඛ්‍යාව: ${matchedTopics.length}`;
-
+            document.getElementById('modalDateSubtitle').innerText = `අදාළ දිනට නියමිත වැඩසටහන්: ${matchedTopics.length}`;
             const container = document.getElementById('modalContentList');
+
             if(matchedTopics.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-slate-400 text-sm">
-                        <i class="fa-solid fa-calendar-xmark text-2xl mb-2 block"></i>
-                        මෙම දින සඳහා විශේෂිත පුනරාවර්තන හෝ ඉගෙනුම් සටහන් නොමැත.
-                    </div>
-                `;
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">මෙම දින සඳහා සටහන් නොමැත.</div>`;
             } else {
                 container.innerHTML = matchedTopics.map(item => {
                     const subjInfo = subjectConfig[item.subject] || { name: item.subject, badge: 'bg-slate-100 text-slate-700' };
@@ -689,48 +730,32 @@
                             <div class="flex items-center justify-between">
                                 <span class="px-2.5 py-1 rounded-lg text-xs font-bold border ${subjInfo.badge}">${subjInfo.name}</span>
                                 <div class="flex items-center space-x-2">
-                                    <label class="flex items-center space-x-1.5 cursor-pointer bg-white dark:bg-slate-700 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-600 text-[10px]">
-                                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTaskCompletion('${taskKey}'); openDayModal('${dateKey}', JSON.parse('${escapedTopics}'))" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500">
+                                    <label class="flex items-center space-x-1.5 cursor-pointer bg-white dark:bg-slate-700 px-2 py-0.5 rounded-lg border text-[10px]">
+                                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTaskCompletion('${taskKey}'); openDayModal('${dateKey}', JSON.parse('${escapedTopics}'))" class="w-3.5 h-3.5 rounded text-indigo-600">
                                         <span class="${isChecked ? 'line-through text-slate-400' : 'font-medium'}">අවසන් කළා</span>
                                     </label>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${item.type === 'මුල් ඉගෙනුම' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300' : 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300'}">${item.type}</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${item.type === 'මුල් ඉගෙනුම' ? 'bg-indigo-100 text-indigo-700' : 'bg-pink-100 text-pink-700'}">${item.type}</span>
                                 </div>
                             </div>
                             <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 ${isChecked ? 'line-through opacity-60' : ''}">${item.name}</h4>
-                            ${item.desc ? `
-                                <div class="mt-2 pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
-                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-0.5">විශේෂ සටහන / විස්තරය:</span>
-                                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${item.desc}</p>
-                                </div>
-                            ` : ''}
+                            ${item.desc ? `<p class="text-xs text-slate-600 dark:text-slate-300">${item.desc}</p>` : ''}
                         </div>
                     `;
                 }).join('');
             }
-
             document.getElementById('dayModal').classList.remove('hidden');
         };
 
-        window.closeDayModal = function() {
-            document.getElementById('dayModal').classList.add('hidden');
-        };
-
-        window.changeMonth = function(dir) {
-            currentDate.setMonth(currentDate.getMonth() + dir);
-            renderCalendar();
-        };
-
-        window.goToCurrentMonth = function() {
-            currentDate = new Date();
-            renderCalendar();
-        };
+        window.closeDayModal = function() { document.getElementById('dayModal').classList.add('hidden'); };
+        window.changeMonth = function(dir) { currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar(); };
+        window.goToCurrentMonth = function() { currentDate = new Date(); renderCalendar(); };
 
         function renderTodayReviews() {
             const todayStr = new Date().toISOString().split('T')[0];
             const listContainer = document.getElementById('todayReviewsList');
             const badge = document.getElementById('todayCountBadge');
-
             let todaysItems = [];
+
             topics.forEach(t => {
                 if(t.reviewDates.includes(todayStr) || t.baseDate === todayStr) {
                     todaysItems.push({
@@ -745,9 +770,8 @@
             });
 
             badge.innerText = `${todaysItems.length} යි`;
-
             if(todaysItems.length === 0) {
-                listContainer.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>`;
+                listContainer.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm">අද දිනට පුනරාවර්තන කිසිවක් නැත! සුභ දවසක්!</div>`;
                 return;
             }
 
@@ -766,17 +790,18 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="px-2.5 py-1 rounded-lg text-xs font-semibold shrink-0 ${item.isBase ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-300'}">
-                            ${item.isBase ? 'අලුත් පාඩම' : 'පුනරාවර්තනය'}
-                        </span>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold shrink-0 ${item.isBase ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-300'}">
+                                ${item.isBase ? 'අලුත් පාඩම' : 'පුනරාවර්තනය'}
+                            </span>
+                            <button onclick="deleteTopic(${item.id})" title="මෙම පාඩම මකන්න" class="p-1.5 text-slate-400 hover:text-red-500 transition-all">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
-
-        renderCalendar();
-        renderTodayReviews();
     </script>
-
 </body>
 </html>
