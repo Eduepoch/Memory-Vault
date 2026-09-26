@@ -183,7 +183,7 @@
                     <!-- Separated Lesson Section (පාඩම) -->
                     <div id="lessonSelectContainer">
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">පාඩම (Lesson)</label>
-                        <select id="topicLessonSelect" required class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
+                        <select id="topicLessonSelect" required onchange="handleLessonSelectChange()" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium">
                             <!-- Populated dynamically based on subject -->
                         </select>
                     </div>
@@ -594,15 +594,7 @@
 
     window.handleSubjectChange = function() {
         const subj = document.getElementById('topicSubject').value;
-        const selectContainer = document.getElementById('lessonSelectContainer');
-        const inputContainer = document.getElementById('lessonInputContainer');
         const selectElem = document.getElementById('topicLessonSelect');
-        const inputElem = document.getElementById('topicLessonInput');
-
-        selectContainer.classList.remove('hidden');
-        inputContainer.classList.add('hidden');
-        inputElem.removeAttribute('required');
-        selectElem.setAttribute('required', 'required');
 
         if (subj === 'maths') {
             const pureOpts = subjectLessons.maths.pure.map(l => `<option value="(ශුද්ධ ගණිතය) ${l}">${l}</option>`).join('');
@@ -614,10 +606,30 @@
                 <optgroup label="--- ව්‍යවහාරික ගණිතය ---">
                     ${appliedOpts}
                 </optgroup>
+                <option value="other">වෙනත් (Other)</option>
             `;
         } else {
             const lessons = subjectLessons[subj] || [];
-            selectElem.innerHTML = lessons.map(l => `<option value="${l}">${l}</option>`).join('');
+            selectElem.innerHTML = lessons.map(l => `<option value="${l}">${l}</option>`).join('') + '<option value="other">වෙනත් (Other)</option>';
+        }
+
+        handleLessonSelectChange();
+    };
+
+    window.handleLessonSelectChange = function() {
+        const selectElem = document.getElementById('topicLessonSelect');
+        const inputContainer = document.getElementById('lessonInputContainer');
+        const inputElem = document.getElementById('topicLessonInput');
+
+        if (selectElem && selectElem.value === 'other') {
+            inputContainer.classList.remove('hidden');
+            inputElem.setAttribute('required', 'required');
+        } else {
+            if (inputContainer) inputContainer.classList.add('hidden');
+            if (inputElem) {
+                inputElem.removeAttribute('required');
+                inputElem.value = '';
+            }
         }
     };
 
@@ -849,10 +861,15 @@
     window.addTopic = function(e) {
         e.preventDefault();
         const subject = document.getElementById('topicSubject').value;
-        let lesson = document.getElementById('topicLessonSelect').value.trim();
-        if (!lesson && subject === 'maths') {
+        const selectVal = document.getElementById('topicLessonSelect').value;
+        let lesson = '';
+
+        if (selectVal === 'other') {
             lesson = document.getElementById('topicLessonInput').value.trim();
+        } else {
+            lesson = selectVal.trim();
         }
+
         const subtopic = document.getElementById('topicSubtopic').value.trim();
         const dateStr = document.getElementById('topicDate').value;
         const desc = document.getElementById('topicDesc').value;
